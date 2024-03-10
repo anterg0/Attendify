@@ -2,9 +2,9 @@
 
 This README provides an overview of the functions and classes in the Attendance Control System, organized into different layers.
 
-## Data Layer:
-**User Class:**
-  The User class represents user entities within the system. Each user has the following fields:
+# Data Layer:
+## User Class:
+The User class represents user entities within the system. Each user has the following fields:
 
 - id (string): Unique identifier for the user.
 - firstName (string): First name of the user.
@@ -12,7 +12,7 @@ This README provides an overview of the functions and classes in the Attendance 
 - type ('admin' | 'employee'): Specifies the type of user, either 'admin' or 'employee'.
 - userName (string): User's login username.
 - password (string): User's login password.  
-**Attendance Class:**  
+## Attendance Class:
 The Attendance class represents attendance records within the system. Each attendance record has the following fields:
 
 - startDateTime (datetime): Date and time when the attendance record starts.
@@ -22,41 +22,40 @@ The Attendance class represents attendance records within the system. Each atten
   
 # Domain Layer:
 
-**User (Abstract Class):**
+## User (Abstract Class):
  - create(user: User): User: Creates a new user with the provided data and returns the created user object. (Abstract method to be implemented by subclasses)
  - update(userData: User): User: Updates user information with the provided data and returns the updated user object. (Abstract method to be implemented by subclasses)
  - delete(userID: string): void: Deletes the user with the specified ID. (Abstract method to be implemented by subclasses)
  - get(userID: string): User: Retrieves user information based on the given ID. (Abstract method to be implemented by subclasses)
-**Admin Class (extends User):**  
+## Admin Class (extends User):
 - getEmployeeAttendances(employeeID: string): Attendance[]: Retrieves attendance records for a specific employee identified by the employee ID.
 - getEmployees(): Employee[]: Retrieves the list of employees.
-**Employee Class (extends User):**  
+## Employee Class (extends User):
 - getOngoingAttendance(): Attendance: Retrieves the ongoing attendance record for the employee.
 - getAttendances(): Attendance[]: Retrieves all attendance records for the employee.
-## Control Layer:
+# Control Layer:
 
-**AuthController Class:**
+## AuthController Class:
 - login(userName: string, password: string): token: string: Authenticates a user based on the provided username and password, returning an authentication token.
 - logout(): void: Logs out the currently authenticated user.
 **AdminController Class:**
 - createEmployee(employeeData: Employee): Employee: Creates a new employee with the provided data and returns the created employee object.
 - getEmployeeAttendances(employeeID: string): Attendance[]: Retrieves attendance records for a specific employee identified by the employee ID.
-**EmployeeController Class:**
+## EmployeeController Class:
 - checkIn(employeeID: string): Attendance: Records the check-in time for the employee identified by the employee ID and returns the corresponding attendance object.
 - checkOut(employeeID: string): Attendance: Records the check-out time for the employee identified by the employee ID and returns the corresponding attendance object.
 - getAttendances(employeeID: string): Attendance[]: Retrieves all attendance records for the employee identified by the employee ID.
-## UI Layer:
+# UI Layer:
 
-**EmployeeUI Class:**
+## EmployeeUI Class:
 - checkIn(): void: Initiates the check-in process for the employee.
 - checkOut(): void: Initiates the check-out process for the employee.
 - displayAttendances(): void: Displays the attendance records for the employee.
-**AdminUI Class:**
+## AdminUI Class:
 - createEmployee(): void: Initiates the process of creating a new employee.
 - viewEmployeeAttendances(employeeID: string): void: Displays attendance records for a specific employee identified by the employee ID.
-**AuthUI Class:**
+## AuthUI Class:
 - login(): void: Initiates the user login process.
-Relationships:
 
 # Employee UI Concept
 ![concept](/assets/design_concept.png)
