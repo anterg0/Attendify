@@ -61,4 +61,4 @@ Relationships:
 # Employee UI Concept
 ![concept](/assets/design_concept.png)
 # Admin UI Concept
-![admin_concept](/assests/admin_concept.png)
+![admin_concept](/assets/admin_concept.png)
