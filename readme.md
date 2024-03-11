@@ -1,6 +1,6 @@
 # Attendify (Attendance Control System)
 ![logo](/assets/logo.jpeg)
-## Anton Shapkovsky, 253505
+## Anton Shpakovsky, 253505
 ***Description:*** Attendify is an app aimed at helping you monitor the presence of your employees. The application allows you to check in at the beginning of the working day and check out after the end of the working day. Attendify can be useful for both the administration of an organization and the employees of that organization. While the administration can check the presence of their employees at work, the employees themselves have the ability to monitor how much time they spend at work.
 # Employee UI Concept
 ![concept](/assets/design_concept.png)
