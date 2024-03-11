@@ -61,8 +61,3 @@ The Attendance class represents attendance records within the system. Each atten
 - viewEmployeeAttendances(employeeID: string): void: Displays attendance records for a specific employee identified by the employee ID.
 ## AuthUI Class:
 - login(): void: Initiates the user login process.
-
-# Employee UI Concept
-![concept](/assets/design_concept.png)
-# Admin UI Concept
-![admin_concept](/assets/admin_concept.png)
