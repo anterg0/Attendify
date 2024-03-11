@@ -1,7 +1,8 @@
-# Attendance Control System
-
-This README provides an overview of the functions and classes in the Attendance Control System, organized into different layers.
-
+# Attendify (Attendance Control System)
+## Anton Shapkovsky, 253505
+***Description:*** Attendify is an app aimed at helping you monitor the presence of your employees. The application allows you to check in at the beginning of the working day and check out after the end of the working day. Attendify can be useful for both the administration of an organization and the employees of that organization. While the administration can check the presence of their employees at work, the employees themselves have the ability to monitor how much time they spend at work.
+# System Class Diagram
+![diagram](/assets/system_diagram.png)
 # Data Layer:
 ## User Class:
 The User class represents user entities within the system. Each user has the following fields:
@@ -38,7 +39,7 @@ The Attendance class represents attendance records within the system. Each atten
 ## AuthController Class:
 - login(userName: string, password: string): token: string: Authenticates a user based on the provided username and password, returning an authentication token.
 - logout(): void: Logs out the currently authenticated user.
-**AdminController Class:**
+## AdminController Class:
 - createEmployee(employeeData: Employee): Employee: Creates a new employee with the provided data and returns the created employee object.
 - getEmployeeAttendances(employeeID: string): Attendance[]: Retrieves attendance records for a specific employee identified by the employee ID.
 ## EmployeeController Class:
