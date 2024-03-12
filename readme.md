@@ -8,57 +8,42 @@
 ![admin_concept](/assets/admin_concept.png)
 # System Class Diagram
 ![diagram](/assets/system_diagram.png)
-# Data Layer:
-## User Class:
-The User class represents user entities within the system. Each user has the following fields:
+# Data Layer
 
-- id (string): Unique identifier for the user.
-- firstName (string): First name of the user.
-- lastName (string): Last name of the user.
-- type ('admin' | 'employee'): Specifies the type of user, either 'admin' or 'employee'.
-- userName (string): User's login username.
-- password (string): User's login password.  
-## Attendance Class:
-The Attendance class represents attendance records within the system. Each attendance record has the following fields:
+## User Entity
+- id: A unique identifier for each user.
+- firstName: The first name of the user.
+- lastName: The last name of the user.
+- type: Specifies the role of the user, either 'admin' or 'employee'.
+- userName: The username used for authentication.
+- password: The password associated with the user's account.
+## Attendance Entity
+- startDateTime: The date and time when the attendance record starts.
+- endDateTime: The date and time when the attendance record ends.
+- userId: The unique identifier of the user associated with the attendance.
+- status: Indicates the status of the attendance, whether it was ended manually, automatically, or is still ongoing.
+# Repository
 
-- startDateTime (datetime): Date and time when the attendance record starts.
-- endDateTime (datetime): Date and time when the attendance record ends.
-- userId (string): Identifier of the user associated with this attendance record.
-- status ('endedManually' | 'endedAutomatically' | 'ongoing'): Indicates the status of the attendance, whether it ended manually, ended automatically, or is currently ongoing.
-  
-# Domain Layer:
-
-## User (Abstract Class):
- - create(user: User): User: Creates a new user with the provided data and returns the created user object. (Abstract method to be implemented by subclasses)
- - update(userData: User): User: Updates user information with the provided data and returns the updated user object. (Abstract method to be implemented by subclasses)
- - delete(userID: string): void: Deletes the user with the specified ID. (Abstract method to be implemented by subclasses)
- - get(userID: string): User: Retrieves user information based on the given ID. (Abstract method to be implemented by subclasses)
-## Admin Class (extends User):
-- getEmployeeAttendances(employeeID: string): Attendance[]: Retrieves attendance records for a specific employee identified by the employee ID.
-- getEmployees(): Employee[]: Retrieves the list of employees.
-## Employee Class (extends User):
-- getOngoingAttendance(): Attendance: Retrieves the ongoing attendance record for the employee.
-- getAttendances(): Attendance[]: Retrieves all attendance records for the employee.
-# Control Layer:
-
-## AuthController Class:
-- login(userName: string, password: string): token: string: Authenticates a user based on the provided username and password, returning an authentication token.
+## AuthService
+- login(userName: string, password: string): token: string: Authenticates a user by validating the provided username and password, returning a token upon successful authentication.
 - logout(): void: Logs out the currently authenticated user.
-## AdminController Class:
-- createEmployee(employeeData: Employee): Employee: Creates a new employee with the provided data and returns the created employee object.
-- getEmployeeAttendances(employeeID: string): Attendance[]: Retrieves attendance records for a specific employee identified by the employee ID.
-## EmployeeController Class:
-- checkIn(employeeID: string): Attendance: Records the check-in time for the employee identified by the employee ID and returns the corresponding attendance object.
-- checkOut(employeeID: string): Attendance: Records the check-out time for the employee identified by the employee ID and returns the corresponding attendance object.
-- getAttendances(employeeID: string): Attendance[]: Retrieves all attendance records for the employee identified by the employee ID.
-# UI Layer:
+## UserController
+- createUser(userData: User): User: Creates a new user with the provided user data.
+- getUser(userID: string): User: Retrieves user information based on the provided user ID.
+- updateUser(userData: User): User: Updates user information with the provided user data.
+- deleteUser(userID: string): void: Deletes a user based on the provided user ID.
+## AttendanceController
+- getAttendances(userID: string): Attendance[]: Retrieves a list of attendance records associated with the specified user ID.
+- checkIn(userID: string): Attendance: Records the check-in time for the specified user.
+- checkOut(userID: string): Attendance: Records the check-out time for the specified user.
+# UI Layer
 
-## EmployeeUI Class:
-- checkIn(): void: Initiates the check-in process for the employee.
-- checkOut(): void: Initiates the check-out process for the employee.
-- displayAttendances(): void: Displays the attendance records for the employee.
-## AdminUI Class:
+## EmployeeUI
+- checkIn(): void: Initiates the check-in process for an employee.
+- checkOut(): void: Initiates the check-out process for an employee.
+- displayAttendances(): void: Displays the attendance records for the logged-in employee.
+## AdminUI
 - createEmployee(): void: Initiates the process of creating a new employee.
-- viewEmployeeAttendances(employeeID: string): void: Displays attendance records for a specific employee identified by the employee ID.
-## AuthUI Class:
-- login(): void: Initiates the user login process.
+- viewEmployeeAttendances(employeeID: string): void: Displays the attendance records for a specific employee identified by their ID.
+## AuthUI
+- login(): void: Initiates the login process, interacting with the AuthService for user authentication.
