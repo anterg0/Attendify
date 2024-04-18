@@ -1,28 +1,54 @@
 // Import necessary modules
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, ActivityIndicator, StyleSheet } from 'react-native';
-import { getFirestore, collection, getDocs, Timestamp } from 'firebase/firestore';
+import { View, Text, FlatList, ActivityIndicator, StyleSheet, RefreshControl } from 'react-native';
+import { getFirestore, collection, getDocs, Timestamp, getDoc, doc } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 
-const AttendanceScreen = () => {
+
+const db = getFirestore();
+const auth = getAuth();
+
+const AttendanceScreen = ({route}) => {
+  const { userID } = (route.params === undefined) ? auth.currentUser.uid : route.params;
   const [attendances, setAttendances] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
 
   // Fetch attendances from Firestore
-  useEffect(() => {
-    const fetchData = async () => {
-      const db = getFirestore();
-      const auth = getAuth();
-      const attendancesRef = collection(db, 'users', auth.currentUser.uid, 'attendances');
-      const snapshot = await getDocs(attendancesRef);
+  const fetchData = async () => {
+    const currentUserID = auth.currentUser.uid;
+    const userDocRef = doc(db,'users',currentUserID);
+    const userDocSnapshot = await getDoc(userDocRef);
+    if (userDocSnapshot.data().type === 'admin') {
+      const attendanceRef = collection(db, 'users', userID, 'attendances');
+      const snapshot = await getDocs(attendanceRef);
       const attendanceList = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
       setAttendances(attendanceList);
       console.log(attendanceList);
       setLoading(false);
-    };
+      setRefreshing(false);
+    } else {
+      const attendanceRef = collection(db, 'users', currentUserID, 'attendances');
+      const snapshot = await getDocs(attendanceRef);
+      const attendanceList = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setAttendances(attendanceList);
+      console.log(attendanceList);
+      setLoading(false);
+      setRefreshing(false);
+    }
+  };
 
+  useEffect(() => {
     fetchData();
   }, []);
+
+  // Handle pull-to-refresh
+  const handleRefresh = () => {
+    setRefreshing(true); // Set refreshing to true when pulling to refresh
+    fetchData(); // Fetch data again
+  };
+
+
 
   // Render loading indicator while data is being fetched
   if (loading) {
@@ -33,7 +59,6 @@ const AttendanceScreen = () => {
     );
   }
 
-  // Render attendance list
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Attendance Records</Text>
@@ -53,6 +78,9 @@ const AttendanceScreen = () => {
             {/* Add more fields as needed */}
           </View>
         )}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+        }
       />
     </View>
   );

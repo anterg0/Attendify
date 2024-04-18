@@ -1,11 +1,11 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
 import { View, Button, StyleSheet } from 'react-native';
-import CreateUser from '../CreateUser';
-import CheckUsers from '../CheckUsers';
 import { Ionicons } from '@expo/vector-icons';
+import Attend from '../Attend';
+import AttendanceScreen from '../AttendanceScreen';
 const Tab = createBottomTabNavigator();
-const AdminHome = ({ navigation }) => {
+const UserHome = ({ navigation }) => {
   const handleCreateUserAccount = () => {
     // Обработчик нажатия кнопки "Create User Account"
     navigation.navigate('CreateUser'); // Переход на экран создания пользователя
@@ -31,16 +31,16 @@ const AdminHome = ({ navigation }) => {
     // </View>
     <Tab.Navigator>
       <Tab.Screen 
-      name='Users' 
-      component={CheckUsers} 
+      name='Attend' 
+      component={Attend} 
       options={{
           headerShown: false,
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="people" color={color} size={size} />
           ),
         }}/>
-      <Tab.Screen name='Create User' 
-      component={CreateUser}
+      <Tab.Screen name='History' 
+      component={AttendanceScreen}
       options={{
         headerShown: false,
         tabBarIcon: ({ color, size }) => (
@@ -66,4 +66,4 @@ const styles = StyleSheet.create({
     },
   });
 
-export default AdminHome;
+export default UserHome;

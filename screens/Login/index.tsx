@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { Alert, Button, SafeAreaView, StyleSheet, TextInput, ActivityIndicator } from 'react-native';
-import firebase from 'firebase/app';
+import { Alert, Button, SafeAreaView, StyleSheet, TextInput, ActivityIndicator, TouchableOpacity, Text } from 'react-native';
 import 'firebase/auth';
-import { createUser, signIn } from '../../firebaseConfig';
+import { signIn } from '../../firebaseConfig';
 
 const Login = ({ navigation }) => {
   const [email, onChangeText] = React.useState('');
@@ -20,11 +19,38 @@ const Login = ({ navigation }) => {
           return;
         }
         console.log('User signed in successfully!');
-        navigation.navigate('AttendanceScreen');
+        navigation.navigate('UserHome');
       })
       .catch((error) => {
-        console.error('Error signing in user:', error);
-        Alert.alert('Error', 'Error occured.');
+        console.error('Error signing in user:', error.code);
+        let errorMessage = '';
+        switch (error.code) {
+          case 'auth/user-not-found':
+            errorMessage = 'User not found. Please check your email or sign up.';
+            break;
+          case 'auth/wrong-password':
+            errorMessage = 'Incorrect password. Please try again.';
+            break;
+          case 'auth/invalid-email':
+            errorMessage = 'Invalid email format. Please enter a valid email address.';
+            break;
+          case 'auth/email-already-in-use':
+            errorMessage = 'Email is already in use. Please use a different email or sign in.';
+            break;
+          case 'auth/too-many-requests':
+            errorMessage = 'Too many unsuccessful login attempts. Please try again later.';
+            break;
+          case 'auth/network-request-failed':
+            errorMessage = 'Network error. Please check your internet connection.';
+            break;
+          case 'auth/invalid-credential':
+            errorMessage = 'Invalid credentials.'
+            break;
+          default:
+            errorMessage = 'An error occurred. Please try again later.';
+        }
+
+        Alert.alert('Authentication Error', errorMessage);
       })
       .finally(() => setIsLoading(false));
   };
@@ -50,11 +76,14 @@ const Login = ({ navigation }) => {
         secureTextEntry={true}
         editable={!isLoading}
       />
-      <Button
+      {/* <Button
         color='#6358EC'
         title={isLoading ? "Logging In..." : "Log In"}
         onPress={handleLogin}
-      />
+      /> */}
+      <TouchableOpacity style={styles.button} onPress={handleLogin}>
+        <Text style={styles.buttonText}>{isLoading ? "Logging In..." : "Log In"}</Text>
+      </TouchableOpacity>
       {isLoading && (
         <ActivityIndicator
           style={styles.activityIndicator}
@@ -87,6 +116,16 @@ const styles = StyleSheet.create({
     bottom: 0,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  button: {
+    backgroundColor: '#6358EC',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: 'white',
+    fontWeight: 'bold',
   },
 });
 

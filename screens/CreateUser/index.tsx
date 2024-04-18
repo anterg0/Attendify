@@ -1,5 +1,5 @@
 import { getApp, initializeApp } from 'firebase/app';
-import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
+import { createUserWithEmailAndPassword, getAuth, sendEmailVerification } from 'firebase/auth';
 import { addDoc, collection, doc, getFirestore, setDoc } from 'firebase/firestore';
 import React, { useState } from 'react';
 import { View, TextInput, Button, StyleSheet } from 'react-native';
@@ -41,6 +41,7 @@ const CreateUser = () => {
       }
       addToDB();
       console.log('User successfully created! ', userCredentials.user.uid);
+      // sendEmailVerification(userCredentials.user);
       // console.log('User signed in right now: ', getAuth().currentUser.email);
     }).catch((error) => {
       console.log('ERROR: ', error);
