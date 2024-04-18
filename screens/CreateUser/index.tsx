@@ -2,7 +2,7 @@ import { getApp, initializeApp } from 'firebase/app';
 import { createUserWithEmailAndPassword, getAuth, sendEmailVerification } from 'firebase/auth';
 import { addDoc, collection, doc, getFirestore, setDoc } from 'firebase/firestore';
 import React, { useState } from 'react';
-import { View, TextInput, Button, StyleSheet } from 'react-native';
+import { View, TextInput, Button, StyleSheet, TouchableOpacity, Text } from 'react-native';
 
 const CreateUser = () => {
   const [firstName, setFirstName] = useState('');
@@ -77,7 +77,10 @@ const CreateUser = () => {
         autoCapitalize='none'
         onChangeText={(text) => setPassword(text)}
       />
-      <Button title="Create" color='#6358EC' onPress={handleCreate} />
+      {/* <Button title="Create" color='#6358EC' onPress={handleCreate} /> */}
+      <TouchableOpacity style={styles.button} onPress={handleCreate}>
+        <Text style={styles.buttonText}>Create</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -94,6 +97,18 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 10,
     paddingHorizontal: 10,
+    borderRadius: 50,
+  },
+  button: {
+    backgroundColor: '#6358EC',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 50,
+  },
+  buttonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
 });
 

@@ -29,14 +29,16 @@ const UserHome = ({ navigation }) => {
     //     color="#6358EC" // Цвет текста кнопки: белый
     //   />
     // </View>
-    <Tab.Navigator>
+    <Tab.Navigator screenOptions={{
+        tabBarActiveTintColor: "#6358EC"
+      }}>
       <Tab.Screen 
       name='Attend' 
       component={Attend} 
       options={{
           headerShown: false,
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="people" color={color} size={size} />
+            <Ionicons name="add-circle-outline" color={color} size={size} />
           ),
         }}/>
       <Tab.Screen name='History' 
@@ -44,7 +46,7 @@ const UserHome = ({ navigation }) => {
       options={{
         headerShown: false,
         tabBarIcon: ({ color, size }) => (
-          <Ionicons name="person-add" color={color} size={size} />
+          <Ionicons name="list-circle-outline" color={color} size={size} />
         ),
       }}/>
     </Tab.Navigator>

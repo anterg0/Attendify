@@ -98,8 +98,9 @@ const Login = ({ navigation }) => {
 const styles = StyleSheet.create({
   input: {
     height: 40,
-    margin: 12,
+    margin: 7,
     borderWidth: 1,
+    borderRadius: 50,
     padding: 10,
     minWidth: "60%",
   },
@@ -121,7 +122,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#6358EC',
     paddingHorizontal: 20,
     paddingVertical: 10,
-    borderRadius: 5,
+    borderRadius: 50,
   },
   buttonText: {
     color: 'white',

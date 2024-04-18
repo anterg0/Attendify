@@ -29,14 +29,16 @@ const AdminHome = ({ navigation }) => {
     //     color="#6358EC" // Цвет текста кнопки: белый
     //   />
     // </View>
-    <Tab.Navigator>
+    <Tab.Navigator screenOptions={{
+      tabBarActiveTintColor: "#6358EC"
+    }}>
       <Tab.Screen 
       name='Users' 
       component={CheckUsers} 
       options={{
           headerShown: false,
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="people" color={color} size={size} />
+            <Ionicons name="people-outline" color={color} size={size} />
           ),
         }}/>
       <Tab.Screen name='Create User' 
@@ -44,7 +46,7 @@ const AdminHome = ({ navigation }) => {
       options={{
         headerShown: false,
         tabBarIcon: ({ color, size }) => (
-          <Ionicons name="person-add" color={color} size={size} />
+          <Ionicons name="person-add-outline" color={color} size={size} />
         ),
       }}/>
     </Tab.Navigator>
