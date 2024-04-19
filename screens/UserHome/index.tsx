@@ -7,13 +7,11 @@ import AttendanceScreen from '../AttendanceScreen';
 const Tab = createBottomTabNavigator();
 const UserHome = ({ navigation }) => {
   const handleCreateUserAccount = () => {
-    // Обработчик нажатия кнопки "Create User Account"
-    navigation.navigate('CreateUser'); // Переход на экран создания пользователя
+    navigation.navigate('CreateUser');
   };
 
   const handleCheckUsers = () => {
-    // Обработчик нажатия кнопки "Check Users"
-    navigation.navigate('CheckUsers'); // Переход на экран проверки пользователей
+    navigation.navigate('CheckUsers');
   };
 
   return (
@@ -62,9 +60,9 @@ const styles = StyleSheet.create({
     button: {
       marginVertical: 10,
       minWidth: 200,
-      borderWidth: 0.5, // Граница кнопки
-      borderRadius: 5, // Закругленные углы кнопки
-      borderColor: '#5988ec', // Цвет границы кнопки
+      borderWidth: 0.5,
+      borderRadius: 5, 
+      borderColor: '#5988ec',
     },
   });
 

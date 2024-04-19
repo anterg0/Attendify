@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Button, StyleSheet, TouchableOpacity } from 'react-native';
-import { getFirestore, collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { getFirestore, collection, addDoc, serverTimestamp, getDoc, doc } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 
 const db = getFirestore();
@@ -11,8 +11,8 @@ const Attend = () => {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const userRef = collection(db, 'users', auth.currentUser.uid);
-      const userDoc = await userRef.get();
+      const userRef = doc(db, 'users', auth.currentUser.uid);
+      const userDoc = await getDoc(userRef);
       setUser(userDoc.data());
     };
 
