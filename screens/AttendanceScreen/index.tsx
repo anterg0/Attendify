@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, ActivityIndicator, StyleSheet, RefreshControl } from 'react-native';
 import { getFirestore, collection, getDocs, Timestamp, getDoc, doc } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
+import { getAttendances } from '../../services/AttendanceController/AttendanceController';
 
 
 const db = getFirestore();
@@ -20,17 +21,13 @@ const AttendanceScreen = ({route}) => {
     const userDocRef = doc(db,'users',currentUserID);
     const userDocSnapshot = await getDoc(userDocRef);
     if (userDocSnapshot.data().type === 'admin') {
-      const attendanceRef = collection(db, 'users', userID, 'attendances');
-      const snapshot = await getDocs(attendanceRef);
-      const attendanceList = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      const attendanceList = await getAttendances(userID);
       setAttendances(attendanceList);
       console.log(attendanceList);
       setLoading(false);
       setRefreshing(false);
     } else {
-      const attendanceRef = collection(db, 'users', currentUserID, 'attendances');
-      const snapshot = await getDocs(attendanceRef);
-      const attendanceList = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      const attendanceList = await getAttendances(currentUserID);
       setAttendances(attendanceList);
       console.log(attendanceList);
       setLoading(false);
@@ -75,7 +72,6 @@ const AttendanceScreen = ({route}) => {
             ) : (
               <Text>Error: Missing date data</Text>
             )}
-            {/* Add more fields as needed */}
           </View>
         )}
         refreshControl={

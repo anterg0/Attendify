@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Button, StyleSheet, TouchableOpacity } from 'react-native';
 import { getFirestore, collection, addDoc, serverTimestamp, getDoc, doc } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
+import { createAttendance } from '../../services/AttendanceController/AttendanceController';
 
 const db = getFirestore();
 const auth = getAuth();
@@ -20,12 +21,7 @@ const Attend = () => {
   }, []);
 
   const handleCreateAttendance = async () => {
-    const attendanceRef = collection(db, 'users', auth.currentUser.uid, 'attendances');
-    await addDoc(attendanceRef, {
-      startDate: serverTimestamp(),
-      endDate: serverTimestamp(),
-    });
-    console.log('Attendance created successfully!');
+    createAttendance(auth.currentUser.uid);
   };
 
   return (

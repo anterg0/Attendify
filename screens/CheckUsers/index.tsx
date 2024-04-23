@@ -1,9 +1,9 @@
 // Import necessary modules
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, TouchableOpacity, ActivityIndicator, StyleSheet, ScrollView, RefreshControl } from 'react-native';
-import { getFirestore, collection, getDocs } from 'firebase/firestore';
-import { getAuth } from 'firebase/auth';
+import { View, Text, FlatList, TouchableOpacity, ActivityIndicator, StyleSheet, RefreshControl } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
+import { getUsers } from '../../services/firebaseService/firebaseService';
+import { getAuth } from 'firebase/auth';
 
 const CheckUsers = ({ navigation }) => {
   const [users, setUsers] = useState([]);
@@ -12,14 +12,10 @@ const CheckUsers = ({ navigation }) => {
 
   // Fetch users from Firestore
   const fetchData = async () => {
-    const db = getFirestore();
-    const auth = getAuth();
-    const usersRef = collection(db, 'users');
-    const snapshot = await getDocs(usersRef);
-    const userList = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    const userList = await getUsers(getAuth().currentUser.uid);
     setUsers(userList);
     setLoading(false);
-    setRefreshing(false); // Set refreshing to false when data is fetched
+    setRefreshing(false);
   };
 
   // Fetch data on initial load and when screen comes into focus

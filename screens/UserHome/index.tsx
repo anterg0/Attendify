@@ -6,27 +6,8 @@ import Attend from '../Attend';
 import AttendanceScreen from '../AttendanceScreen';
 const Tab = createBottomTabNavigator();
 const UserHome = ({ navigation }) => {
-  const handleCreateUserAccount = () => {
-    navigation.navigate('CreateUser');
-  };
-
-  const handleCheckUsers = () => {
-    navigation.navigate('CheckUsers');
-  };
 
   return (
-    // <View style={styles.container}>
-    //   <Button
-    //     title="Create User Account"
-    //     onPress={handleCreateUserAccount}
-    //     color='#6358EC' // Цвет текста кнопки: белый
-    //   />
-    //   <Button
-    //     title="Check Users"
-    //     onPress={handleCheckUsers}
-    //     color="#6358EC" // Цвет текста кнопки: белый
-    //   />
-    // </View>
     <Tab.Navigator screenOptions={{
         tabBarActiveTintColor: "#6358EC"
       }}>
