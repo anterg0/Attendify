@@ -1,13 +1,13 @@
-// Import necessary modules
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, ActivityIndicator, StyleSheet, RefreshControl } from 'react-native';
-import { getFirestore, collection, getDocs, Timestamp, getDoc, doc } from 'firebase/firestore';
+import { getFirestore, getDoc, doc } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
-import { getAttendances } from '../../services/AttendanceController/AttendanceController';
+import attendanceRepository from '../../repositories/attandanceRepository';
 
 
 const db = getFirestore();
 const auth = getAuth();
+const attendanceRepo = new attendanceRepository();
 
 const AttendanceScreen = ({route}) => {
   const { userID } = (route.params === undefined) ? auth.currentUser.uid : route.params;
@@ -21,13 +21,13 @@ const AttendanceScreen = ({route}) => {
     const userDocRef = doc(db,'users',currentUserID);
     const userDocSnapshot = await getDoc(userDocRef);
     if (userDocSnapshot.data().type === 'admin') {
-      const attendanceList = await getAttendances(userID);
+      const attendanceList = await attendanceRepo.getAttendancesFromFirebase(userID);
       setAttendances(attendanceList);
       console.log(attendanceList);
       setLoading(false);
       setRefreshing(false);
     } else {
-      const attendanceList = await getAttendances(currentUserID);
+      const attendanceList = await attendanceRepo.getAttendancesFromFirebase(currentUserID);
       setAttendances(attendanceList);
       console.log(attendanceList);
       setLoading(false);

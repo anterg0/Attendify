@@ -1,5 +1,4 @@
-import { StatusBar } from 'expo-status-bar';
-import { Button, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import Login from './screens/Login';
 import AttendanceScreen from './screens/AttendanceScreen';
 import {NavigationContainer} from '@react-navigation/native';

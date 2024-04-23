@@ -1,10 +1,12 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
-import { View, Button, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Attend from '../Attend';
 import AttendanceScreen from '../AttendanceScreen';
+
 const Tab = createBottomTabNavigator();
+
 const UserHome = ({ navigation }) => {
 
   return (

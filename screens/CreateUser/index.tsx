@@ -1,9 +1,8 @@
-import { initializeApp } from 'firebase/app';
-import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
-import { collection, doc, getFirestore, setDoc } from 'firebase/firestore';
 import React, { useState } from 'react';
 import { View, TextInput, StyleSheet, TouchableOpacity, Text } from 'react-native';
-import { createUser } from '../../services/firebaseService/firebaseService';
+import userRepository from '../../repositories/userRepository';
+
+const repo = new userRepository();
 
 const CreateUser = () => {
   const [firstName, setFirstName] = useState('');
@@ -12,7 +11,7 @@ const CreateUser = () => {
   const [password, setPassword] = useState('');
 
   const handleCreate = () => {
-    createUser(email, password, firstName, lastName);
+    repo.createUserInFirebase(email, password, firstName, lastName);
   };
 
   return (

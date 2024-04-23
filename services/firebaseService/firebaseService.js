@@ -18,6 +18,19 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+export const getUser = async (adminUID, targetUID) => {
+    const userRef = doc(db,'users',adminUID);
+    const userSnap = await getDoc(userRef);
+    if (userSnap.data().type === 'admin') {
+        const targetRef = doc(db,'users',targetUID);
+        const targetSnap = await getDoc(targetRef);
+        return targetSnap.data();
+    } else {
+        console.log('You are not an admin.');
+        return null;
+    }
+};
+
 export const getUsers = async (userID) => {
     const userRef = doc(db, 'users', userID);
     const userSnap = await getDoc(userRef);
@@ -27,7 +40,7 @@ export const getUsers = async (userID) => {
         const userList = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         return userList;
     } else {
-        Alert.alert('Error', 'How did we even get here?')
+        Alert.alert('Error', 'How did we even get here?');
         return null;
     }
 };

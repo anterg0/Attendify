@@ -1,10 +1,11 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
-import { StyleSheet } from 'react-native';
 import CreateUser from '../CreateUser';
 import CheckUsers from '../CheckUsers';
 import { Ionicons } from '@expo/vector-icons';
+
 const Tab = createBottomTabNavigator();
+
 const AdminHome = ({ navigation }) => {
 
   return (

@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { Alert, SafeAreaView, StyleSheet, TextInput, ActivityIndicator, TouchableOpacity, Text } from 'react-native';
+import { SafeAreaView, StyleSheet, TextInput, ActivityIndicator, TouchableOpacity, Text } from 'react-native';
 import 'firebase/auth';
-import { signIn } from '../../services/firebaseService/firebaseService';
+import userRepository from '../../repositories/userRepository';
+
+const repo = new userRepository();
 
 const Login = ({ navigation }) => {
   const [email, onChangeText] = React.useState('');
@@ -10,7 +12,7 @@ const Login = ({ navigation }) => {
 
   const handleLogin = () => {
     setIsLoading(true);
-    signIn(email, password)
+    repo.signInWithFirebase(email, password)
       .then((userCred) => {
         if (userCred.type == 'admin') {
           console.log('Admin signed in successfully!');

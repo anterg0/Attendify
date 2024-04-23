@@ -1,27 +1,37 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Button, StyleSheet, TouchableOpacity } from 'react-native';
-import { getFirestore, collection, addDoc, serverTimestamp, getDoc, doc } from 'firebase/firestore';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { getFirestore, getDoc, doc } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
-import { createAttendance } from '../../services/AttendanceController/AttendanceController';
+import attendanceRepository from '../../repositories/attandanceRepository';
 
 const db = getFirestore();
 const auth = getAuth();
 
+const attendRepo = new attendanceRepository();
+ 
 const Attend = () => {
   const [user, setUser] = useState(null);
+  const [hasOngoingAttendance, setHasOngoingAttendance] = useState(false);
 
   useEffect(() => {
     const fetchUser = async () => {
       const userRef = doc(db, 'users', auth.currentUser.uid);
       const userDoc = await getDoc(userRef);
       setUser(userDoc.data());
+      if (await attendRepo.checkOngoing(auth.currentUser.uid)) setHasOngoingAttendance(true);
+      else setHasOngoingAttendance(false);
     };
 
     fetchUser();
   }, []);
 
-  const handleCreateAttendance = async () => {
-    createAttendance(auth.currentUser.uid);
+  const handleCheckIn = async () => {
+    await attendRepo.checkInWithFirebase(auth.currentUser.uid);
+    setHasOngoingAttendance(true);
+  };
+  const handleCheckOut = async () => {
+    await attendRepo.checkOutWithFirebase(auth.currentUser.uid);
+    setHasOngoingAttendance(false);
   };
 
   return (
@@ -31,9 +41,15 @@ const Attend = () => {
           Hello, {user.firstName} {user.lastName}
         </Text>
       )}
-      <TouchableOpacity style={styles.button} onPress={handleCreateAttendance}>
-        <Text style={styles.buttonText}>Get to work!</Text>
-      </TouchableOpacity>
+      {hasOngoingAttendance ? (
+        <TouchableOpacity style={styles.button} onPress={handleCheckOut}>
+          <Text style={styles.buttonText}>Relax a bit.</Text>
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity style={styles.button} onPress={handleCheckIn}>
+          <Text style={styles.buttonText}>Get to work!</Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 };

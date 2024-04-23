@@ -1,18 +1,20 @@
-// Import necessary modules
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, TouchableOpacity, ActivityIndicator, StyleSheet, RefreshControl } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
-import { getUsers } from '../../services/firebaseService/firebaseService';
 import { getAuth } from 'firebase/auth';
+import userRepository from '../../repositories/userRepository';
+
+const repo = new userRepository();
 
 const CheckUsers = ({ navigation }) => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false); // Add refreshing state
-
+  // query-tanstack
   // Fetch users from Firestore
   const fetchData = async () => {
-    const userList = await getUsers(getAuth().currentUser.uid);
+    // const userList = await getUsers(getAuth().currentUser.uid);
+    const userList = await repo.getUsersFromFirebase(getAuth().currentUser.uid);
     setUsers(userList);
     setLoading(false);
     setRefreshing(false);
