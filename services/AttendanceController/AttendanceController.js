@@ -1,4 +1,4 @@
-import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, getFirestore, serverTimestamp, setDoc } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, getFirestore, serverTimestamp, setDoc, updateDoc } from "firebase/firestore";
 
 const db = getFirestore();
 
@@ -6,6 +6,10 @@ export const checkIn = async (userID) => {
   const attendanceRef = doc(db, 'users', userID, 'attendances', 'ongoing');
   await setDoc(attendanceRef, {
     startDate: serverTimestamp(),
+  });
+  const userRef = doc(db, 'users', userID);
+  await updateDoc(userRef, {
+    isCheckedIn: true,
   });
   console.log('Checked in successfully!');
 };
@@ -19,6 +23,10 @@ export const checkOut = async (userID) => {
     await addDoc(finalAttendance, {
       startDate: attendanceSnap.data().startDate,
       endDate: serverTimestamp(),
+    });
+    const userRef = doc(db, 'users', userID);
+    await updateDoc(userRef, {
+      isCheckedIn: false,
     });
   } catch (error) {
     console.error('ERROR: ', error);
@@ -40,10 +48,7 @@ export const getAttendances = async (userID) => {
 };
 
 export const checkOngoingAttendance = async (userID) => {
-  const attendanceRef = doc(db, 'users', userID, 'attendances', 'ongoing');
-  if ((await getDoc(attendanceRef)).exists()) {
-    return true;
-  } else {
-    return false;
-  }
+  const userRef = doc(db, 'users', userID);
+  const user = await getDoc(userRef);
+  return user.data().isCheckedIn;
 };

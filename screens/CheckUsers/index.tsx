@@ -56,7 +56,7 @@ const CheckUsers = ({ navigation }) => {
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <TouchableOpacity onPress={() => navigation.navigate('AttendanceScreen', { userID: item.id })}>
-            <View style={styles.item}>
+            <View style={[styles.item, item.isCheckedIn && styles.userIsCheckedIn]}>
               <Text>{item.firstName} {item.lastName}</Text>
             </View>
           </TouchableOpacity>
@@ -93,6 +93,9 @@ const styles = StyleSheet.create({
     borderColor: '#ddd',
     borderRadius: 5,
   },
+  userIsCheckedIn: {
+    borderColor: '#6358EC',
+  }
 });
 
 export default CheckUsers;

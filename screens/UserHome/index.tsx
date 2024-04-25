@@ -16,7 +16,7 @@ const UserHome = ({ navigation }) => {
   }, [navigation]);
 
   return (
-    <Tab.Navigator initialRouteName='Attend' screenOptions={{
+    <Tab.Navigator initialRouteName='Home' screenOptions={{
         tabBarActiveTintColor: "#6358EC"
       }}>
       <Tab.Screen name='History'
@@ -28,7 +28,7 @@ const UserHome = ({ navigation }) => {
         ),
       }}/>
       <Tab.Screen 
-      name='Home  ' 
+      name='Home' 
       component={Attend} 
       options={{
           headerShown: false,
