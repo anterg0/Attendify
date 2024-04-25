@@ -82,7 +82,7 @@ const AttendanceScreen = ({route}) => {
             <View style={styles.item}>
               {item.startDate && item.endDate && item.startDate.seconds && item.endDate.seconds ? (
                 <React.Fragment>
-                  <Text>Start Date: {new Date(item.startDate.seconds * 1000 + item.startDate.nanoseconds / 1000000).toLocaleString()} {console.log(item)}</Text>
+                  <Text>Start Date: {new Date(item.startDate.seconds * 1000 + item.startDate.nanoseconds / 1000000).toLocaleString()}</Text>
                   <Text>End Date: {new Date(item.endDate.seconds * 1000 + item.endDate.nanoseconds / 1000000).toLocaleString()}</Text>
                 </React.Fragment>
               ) : (
