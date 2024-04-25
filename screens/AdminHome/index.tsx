@@ -24,7 +24,7 @@ const AdminHome = ({ navigation }) => {
       options={{
         headerShown: false,
         tabBarIcon: ({ color, size }) => (
-          <Ionicons name="person-add-outline" color={color} size={size} />
+          <Ionicons name="person-add-sharp" color={color} size={size} />
         ),
       }}/>
       <Tab.Screen 
@@ -33,7 +33,7 @@ const AdminHome = ({ navigation }) => {
       options={{
           headerShown: false,
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="people-outline" color={color} size={size} />
+            <Ionicons name="people-sharp" color={color} size={size} />
           ),
         }}/>
       <Tab.Screen name='Settings' 
@@ -41,7 +41,7 @@ const AdminHome = ({ navigation }) => {
       options={{
         headerShown: false,
         tabBarIcon: ({ color, size }) => (
-          <Ionicons name='settings-outline' color={color} size={size} />
+          <Ionicons name='settings-sharp' color={color} size={size} />
         ),
       }}/>
     </Tab.Navigator>

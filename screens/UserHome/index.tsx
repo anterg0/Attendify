@@ -19,21 +19,21 @@ const UserHome = ({ navigation }) => {
     <Tab.Navigator initialRouteName='Attend' screenOptions={{
         tabBarActiveTintColor: "#6358EC"
       }}>
-      <Tab.Screen name='History' 
+      <Tab.Screen name='History'
       component={AttendanceScreen}
       options={{
         headerShown: false,
         tabBarIcon: ({ color, size }) => (
-          <Ionicons name="list-circle-outline" color={color} size={size} />
+          <Ionicons name='time-sharp' color={color} size={size} />
         ),
       }}/>
       <Tab.Screen 
-      name='Attend' 
+      name='Home  ' 
       component={Attend} 
       options={{
           headerShown: false,
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="add-circle-outline" color={color} size={size} />
+            <Ionicons name='home-sharp' color={color} size={size} />
           ),
         }}/>
       <Tab.Screen
@@ -42,7 +42,7 @@ const UserHome = ({ navigation }) => {
       options={{
         headerShown: false,
         tabBarIcon: ({ color, size }) => (
-          <Ionicons name='settings-outline' color={color} size={size}/>
+          <Ionicons name='settings-sharp' color={color} size={size}/>
         )
       }}
       />

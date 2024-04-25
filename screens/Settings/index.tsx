@@ -1,10 +1,11 @@
 import { getAuth } from "firebase/auth";
-import React from "react";
-import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import React, { useState } from "react";
+import { ActivityIndicator, Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 const auth = getAuth();
 
 const Settings = ({ navigation }) => {
+    const [isLoading, setIsLoading] = useState(false);
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -14,7 +15,9 @@ const Settings = ({ navigation }) => {
 
   const handleLogOut = async () => {
     try {
+        setIsLoading(true);
         await auth.signOut();
+        setIsLoading(false);
         navigation.navigate('Login');
     } catch (error) {
         console.error(error);
@@ -27,6 +30,13 @@ const Settings = ({ navigation }) => {
         <TouchableOpacity style={styles.button} onPress={handleLogOut}>
             <Text style={styles.buttonText}>Log Out</Text>
         </TouchableOpacity>
+        {isLoading && (
+        <ActivityIndicator
+          style={styles.activityIndicator}
+          size="large"
+          color="#6358EC"
+        />
+      )}
     </View>
   );
 };
