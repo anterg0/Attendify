@@ -1,4 +1,4 @@
-import { createUser, getUsers, signIn } from "../services/firebaseService/firebaseService";
+import { createUser, getUser, getUsers, signIn } from "../services/firebaseService/firebaseService";
 
 class userRepository {
     async getUsersFromFirebase(userID) {
@@ -11,6 +11,9 @@ class userRepository {
   
     async signInWithFirebase(email, password) {
       return await signIn(email, password);
+    }
+    async getUserFromFirebase(adminUID, targetUID) {
+      return await getUser(adminUID, targetUID);
     }
   }
   

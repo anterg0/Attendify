@@ -33,7 +33,7 @@ const Login = ({ navigation }) => {
         style={[styles.input, loginInputStyle]}
         onChangeText={onChangeText}
         value={email}
-        placeholder="email"
+        placeholder="Email"
         autoCapitalize='none'
         editable={!isLoading}
       />
@@ -41,12 +41,12 @@ const Login = ({ navigation }) => {
         style={[styles.input, loginInputStyle]}
         onChangeText={onChangePassword}
         value={password}
-        placeholder="password"
+        placeholder="Password"
         autoCapitalize='none'
         secureTextEntry={true}
         editable={!isLoading}
       />
-      <TouchableOpacity style={styles.button} onPress={handleLogin}>
+      <TouchableOpacity style={[styles.button, loginInputStyle]} onPress={handleLogin}>
         <Text style={styles.buttonText}>{isLoading ? "Logging In..." : "Log In"}</Text>
       </TouchableOpacity>
       {isLoading && (
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     height: 40,
     margin: 7,
     borderWidth: 1,
-    borderRadius: 50,
+    borderRadius: 7,
     padding: 10,
     minWidth: "60%",
   },
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#6358EC',
     paddingHorizontal: 20,
     paddingVertical: 10,
-    borderRadius: 50,
+    borderRadius: 7,
   },
   buttonText: {
     color: 'white',

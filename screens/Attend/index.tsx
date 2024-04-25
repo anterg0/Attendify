@@ -43,11 +43,11 @@ const Attend = () => {
       )}
       {hasOngoingAttendance ? (
         <TouchableOpacity style={styles.button} onPress={handleCheckOut}>
-          <Text style={styles.buttonText}>Relax a bit.</Text>
+          <Text style={styles.buttonText}>Check Out</Text>
         </TouchableOpacity>
       ) : (
         <TouchableOpacity style={styles.button} onPress={handleCheckIn}>
-          <Text style={styles.buttonText}>Get to work!</Text>
+          <Text style={styles.buttonText}>Check In</Text>
         </TouchableOpacity>
       )}
     </View>
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#6358EC',
     paddingHorizontal: 20,
     paddingVertical: 10,
-    borderRadius: 50,
+    borderRadius: 7,
   },
   buttonText: {
     color: 'white',

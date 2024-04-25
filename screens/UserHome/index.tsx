@@ -1,6 +1,5 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
-import { StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Attend from '../Attend';
 import AttendanceScreen from '../AttendanceScreen';
@@ -33,20 +32,5 @@ const UserHome = ({ navigation }) => {
     </Tab.Navigator>
   );
 };
-
-const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    button: {
-      marginVertical: 10,
-      minWidth: 200,
-      borderWidth: 0.5,
-      borderRadius: 5, 
-      borderColor: '#5988ec',
-    },
-  });
 
 export default UserHome;

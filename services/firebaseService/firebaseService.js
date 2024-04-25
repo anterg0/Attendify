@@ -26,8 +26,8 @@ export const getUser = async (adminUID, targetUID) => {
         const targetSnap = await getDoc(targetRef);
         return targetSnap.data();
     } else {
-        console.log('You are not an admin.');
-        return null;
+        console.error('You are not an admin.');
+        throw new Error('You are not an admin.')
     }
 };
 
@@ -66,6 +66,7 @@ export const createUser = (email, password, firstName, lastName) => {
         })
     } catch (error) {
         console.error('Error creating account:', error);
+        throw error;
     }
   };
 export const signIn = async (email, password) => {

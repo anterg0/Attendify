@@ -21,8 +21,8 @@ export const checkOut = async (userID) => {
       endDate: serverTimestamp(),
     });
   } catch (error) {
-    console.log('ERROR: ', error);
-    return;
+    console.error('ERROR: ', error);
+    throw error;
   }
   console.log('Checked out successfully!');
 };
