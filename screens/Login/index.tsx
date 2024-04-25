@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { SafeAreaView, StyleSheet, TextInput, ActivityIndicator, TouchableOpacity, Text } from 'react-native';
+import { SafeAreaView, StyleSheet, TextInput, ActivityIndicator, TouchableOpacity, Text, View } from 'react-native';
 import 'firebase/auth';
 import userRepository from '../../repositories/userRepository';
+import { Ionicons } from '@expo/vector-icons';
 
 const repo = new userRepository();
 
@@ -9,6 +10,8 @@ const Login = ({ navigation }) => {
   const [email, onChangeText] = React.useState('');
   const [password, onChangePassword] = React.useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isEmailFocused, setIsEmailFocused] = useState(false);
+  const [isPasswordFocused, setIsPasswordFocused] = useState(false);
 
   const handleLogin = () => {
     setIsLoading(true);
@@ -30,17 +33,21 @@ const Login = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.cont}>
       <TextInput
-        style={[styles.input, loginInputStyle]}
+        style={[styles.input, loginInputStyle, isEmailFocused && styles.inputFocused]}
         onChangeText={onChangeText}
         value={email}
+        onFocus={() => setIsEmailFocused(true)}
+        onBlur={() => setIsEmailFocused(false)}
         placeholder="Email"
         autoCapitalize='none'
         editable={!isLoading}
       />
       <TextInput
-        style={[styles.input, loginInputStyle]}
+        style={[styles.input, loginInputStyle, isPasswordFocused && styles.inputFocused]}
         onChangeText={onChangePassword}
         value={password}
+        onFocus={() => setIsPasswordFocused(true)}
+        onBlur={() => setIsPasswordFocused(false)}
         placeholder="Password"
         autoCapitalize='none'
         secureTextEntry={true}
@@ -68,6 +75,9 @@ const styles = StyleSheet.create({
     borderRadius: 7,
     padding: 10,
     minWidth: "60%",
+  },
+  inputFocused: {
+    borderColor: '#6358EC',
   },
   cont: {
     alignItems: 'center',

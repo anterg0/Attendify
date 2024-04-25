@@ -6,7 +6,7 @@ class userRepository {
     }
   
     async createUserInFirebase(email, password, firstName, lastName) {
-      return await createUser(email, password, firstName, lastName);
+      return createUser(email, password, firstName, lastName);
     }
   
     async signInWithFirebase(email, password) {

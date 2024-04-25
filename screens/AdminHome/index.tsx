@@ -3,15 +3,30 @@ import React from 'react';
 import CreateUser from '../CreateUser';
 import CheckUsers from '../CheckUsers';
 import { Ionicons } from '@expo/vector-icons';
+import Settings from '../Settings';
 
 const Tab = createBottomTabNavigator();
 
 const AdminHome = ({ navigation }) => {
 
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerBackVisible: false
+    });
+  }, [navigation]);
+
   return (
-    <Tab.Navigator screenOptions={{
+    <Tab.Navigator initialRouteName='Users' screenOptions={{
       tabBarActiveTintColor: "#6358EC"
     }}>
+      <Tab.Screen name='Create User' 
+      component={CreateUser}
+      options={{
+        headerShown: false,
+        tabBarIcon: ({ color, size }) => (
+          <Ionicons name="person-add-outline" color={color} size={size} />
+        ),
+      }}/>
       <Tab.Screen 
       name='Users' 
       component={CheckUsers} 
@@ -21,12 +36,12 @@ const AdminHome = ({ navigation }) => {
             <Ionicons name="people-outline" color={color} size={size} />
           ),
         }}/>
-      <Tab.Screen name='Create User' 
-      component={CreateUser}
+      <Tab.Screen name='Settings' 
+      component={Settings}
       options={{
         headerShown: false,
         tabBarIcon: ({ color, size }) => (
-          <Ionicons name="person-add-outline" color={color} size={size} />
+          <Ionicons name='settings-outline' color={color} size={size} />
         ),
       }}/>
     </Tab.Navigator>
