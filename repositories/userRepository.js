@@ -12,6 +12,7 @@ class userRepository {
     async signInWithFirebase(email, password) {
       return await signIn(email, password);
     }
+
     async getUserFromFirebase(adminUID, targetUID) {
       return await getUser(adminUID, targetUID);
     }
