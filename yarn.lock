@@ -2768,12 +2768,19 @@
   resolved "https://registry.npmjs.org/@types/range-parser/-/range-parser-1.2.7.tgz"
   integrity sha512-hKormJbkJqzQGhziax5PItDUTMAM9uE2XXQmM37dyd4hVM+5aVl7oVxMVUiVQn2oCQFN/LKCZdvSM0pFRqbSmQ==
 
+<<<<<<< HEAD
 "@types/react-csv@^1.1.10":
   version "1.1.10"
   resolved "https://registry.npmjs.org/@types/react-csv/-/react-csv-1.1.10.tgz"
   integrity sha512-PESAyASL7Nfi/IyBR3ufd8qZkyoS+7jOylKmJxRZUZLFASLo4NZaRsJ8rNP8pCcbIziADyWBbLPD1nPddhsL4g==
   dependencies:
     "@types/react" "*"
+=======
+"@types/react-native-fetch-blob@^0.10.11":
+  version "0.10.11"
+  resolved "https://registry.npmjs.org/@types/react-native-fetch-blob/-/react-native-fetch-blob-0.10.11.tgz"
+  integrity sha512-gIQNmq1HI3aYo0z3onsv6mJPPt34bQd2w1eBhWcDq+5miTPZi/MQYMRamZyoZB2QGON/FIov9/gxXaO9FkfFtg==
+>>>>>>> 4235f6019bbe94aeddd444048063883c63efbadc
 
 "@types/react-test-renderer@^18.0.7":
   version "18.0.7"
@@ -3158,7 +3165,11 @@ balanced-match@^1.0.0:
   resolved "https://registry.npmjs.org/balanced-match/-/balanced-match-1.0.2.tgz"
   integrity sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==
 
+<<<<<<< HEAD
 base-64@0.1.0:
+=======
+base-64@^0.1.0, base-64@0.1.0:
+>>>>>>> 4235f6019bbe94aeddd444048063883c63efbadc
   version "0.1.0"
   resolved "https://registry.npmjs.org/base-64/-/base-64-0.1.0.tgz"
   integrity sha512-Y5gU45svrR5tI2Vt/X9GPd3L0HNIKzGu202EjxrXMpuc2V2CiKgemAbUUsqYmZJvPtCXoUKjNZwBJzsNScUbXA==
@@ -6551,6 +6562,7 @@ react-is@^18.0.0:
   resolved "https://registry.npmjs.org/react-is/-/react-is-18.2.0.tgz"
   integrity sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==
 
+<<<<<<< HEAD
 react-native-csv@^0.2.0:
   version "0.2.0"
   resolved "https://registry.npmjs.org/react-native-csv/-/react-native-csv-0.2.0.tgz"
@@ -6558,6 +6570,23 @@ react-native-csv@^0.2.0:
   dependencies:
     "@types/papaparse" "^5.2.5"
     papaparse "^5.3.0"
+=======
+react-native-fetch-blob@^0.10.8:
+  version "0.10.8"
+  resolved "https://registry.npmjs.org/react-native-fetch-blob/-/react-native-fetch-blob-0.10.8.tgz"
+  integrity sha512-+zE/VjBO9HTjqNXL1KgtgS3ZTH8CNuxg9rJDml+GsO1UbIe4EgdRiCy/sIV9X8lVYimKfep8iJsVMTsjJvQHmA==
+  dependencies:
+    base-64 "0.1.0"
+    glob "7.0.6"
+
+react-native-fs@^2.20.0:
+  version "2.20.0"
+  resolved "https://registry.npmjs.org/react-native-fs/-/react-native-fs-2.20.0.tgz"
+  integrity sha512-VkTBzs7fIDUiy/XajOSNk0XazFE9l+QlMAce7lGuebZcag5CnjszB+u4BdqzwaQOdcYb5wsJIsqq4kxInIRpJQ==
+  dependencies:
+    base-64 "^0.1.0"
+    utf8 "^3.0.0"
+>>>>>>> 4235f6019bbe94aeddd444048063883c63efbadc
 
 "react-native-safe-area-context@>= 3.0.0", react-native-safe-area-context@4.8.2:
   version "4.8.2"
@@ -7660,6 +7689,11 @@ use-latest-callback@^0.1.9:
   version "0.1.9"
   resolved "https://registry.npmjs.org/use-latest-callback/-/use-latest-callback-0.1.9.tgz"
   integrity sha512-CL/29uS74AwreI/f2oz2hLTW7ZqVeV5+gxFeGudzQrgkCytrHw33G4KbnQOrRlAEzzAFXi7dDLMC9zhWcVpzmw==
+
+utf8@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.npmjs.org/utf8/-/utf8-3.0.0.tgz"
+  integrity sha512-E8VjFIQ/TyQgp+TZfS6l8yp/xWppSAHzidGiRrqe4bK4XP9pTRyKFgGJpO3SN7zdX4DeomTrwaseCHovfpFcqQ==
 
 util-deprecate@^1.0.1, util-deprecate@~1.0.1:
   version "1.0.2"
