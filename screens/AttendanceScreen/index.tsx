@@ -1,11 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, ActivityIndicator, StyleSheet, RefreshControl, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, FlatList, ActivityIndicator, StyleSheet, RefreshControl, TouchableOpacity, Platform, Alert } from 'react-native';
 import { getFirestore, getDoc, doc } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 import attendanceRepository from '../../repositories/attandanceRepository';
 import { Ionicons } from '@expo/vector-icons';
 import userRepository from '../../repositories/userRepository';
+import { dbDateToJsDate } from '../../services/AttendanceController/AttendanceController';
+import { jsonToCSV } from 'react-native-csv';
+import RNFetchBlob from 'rn-fetch-blob';
 
+
+const attendancesToCSV = (attendanceList) => {
+  const csvData = [
+    ["id", "startDate", "endDate"],
+    ...(attendanceList.map((attendance) => ([attendance.id, dbDateToJsDate(attendance.startDate), dbDateToJsDate(attendance.endDate)])))
+  ];
+  return csvData;
+};
 
 const db = getFirestore();
 const auth = getAuth();
@@ -56,7 +67,27 @@ const AttendanceScreen = ({route}) => {
     fetchData(); // Fetch data again
   };
 
+  const downloadCSV = async () => {
+    try {
+      const csvData = attendancesToCSV(attendances); // Assuming this function exists in your code
+      const pathToFolder = RNFetchBlob.fs.dirs.DownloadDir;
+      const filePath = `${pathToFolder}/export.csv`;
 
+      await RNFetchBlob.fs.writeFile(filePath, csvData, 'utf8');
+      console.log('CSV DOWNLOADED');
+    } catch (error) {
+      console.error('Error downloading CSV:', error);
+    }
+  };
+
+  const csvData = [
+    ["firstname", "lastname", "email"],
+    ["Ahmed", "Tomi", "ah@smthing.co.com"],
+    ["Raed", "Labes", "rl@smthing.co.com"],
+    ["Yezzi", "Min l3b", "ymin@cocococo.com"]
+  ];
+
+  console.log('csv data? ', jsonToCSV(attendances));
 
   // Render loading indicator while data is being fetched
   if (loading) {
@@ -66,7 +97,6 @@ const AttendanceScreen = ({route}) => {
       </View>
     );
   }
-
   return (
     <View style={styles.container}>
       {userCred && (<Text style={styles.nameHeader}>{userCred.firstName} {userCred.lastName}</Text>)}
@@ -82,8 +112,8 @@ const AttendanceScreen = ({route}) => {
             <View style={styles.item}>
               {item.startDate && item.endDate && item.startDate.seconds && item.endDate.seconds ? (
                 <React.Fragment>
-                  <Text>Start Date: {new Date(item.startDate.seconds * 1000 + item.startDate.nanoseconds / 1000000).toLocaleString()}</Text>
-                  <Text>End Date: {new Date(item.endDate.seconds * 1000 + item.endDate.nanoseconds / 1000000).toLocaleString()}</Text>
+                  <Text>Start Date: {dbDateToJsDate(item.startDate)}</Text>
+                  <Text>End Date: {dbDateToJsDate(item.endDate)}</Text>
                 </React.Fragment>
               ) : (
                 <Text>Error: Missing date data</Text>
@@ -95,7 +125,7 @@ const AttendanceScreen = ({route}) => {
           <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
         }
       />
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button} onPress={downloadCSV}>
         <Text style={styles.export}><Ionicons name='download-outline'  size={25}/> Export to CSV</Text>
       </TouchableOpacity>
     </View>

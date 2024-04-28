@@ -2,6 +2,10 @@ import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, getFirestore, serv
 
 const db = getFirestore();
 
+export const dbDateToJsDate = (dbDate) => {
+  return new Date(dbDate.seconds * 1000 + dbDate.nanoseconds / 1000000).toLocaleString();
+};
+
 export const checkIn = async (userID) => {
   const attendanceRef = doc(db, 'users', userID, 'attendances', 'ongoing');
   await setDoc(attendanceRef, {

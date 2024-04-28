@@ -1,4 +1,4 @@
-import { checkIn, checkOngoingAttendance, checkOut, getAttendances } from "../services/AttendanceController/AttendanceController";
+import { checkIn, checkOngoingAttendance, checkOut, exportToCSV, getAttendances } from "../services/AttendanceController/AttendanceController";
 
 
 class attendanceRepository {
