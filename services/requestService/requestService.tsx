@@ -1,23 +1,24 @@
 import { getAuth } from "firebase/auth";
-import { addDoc, collection, doc, getDoc, getDocs, getFirestore, serverTimestamp, updateDoc } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, getFirestore, serverTimestamp, setDoc, updateDoc } from "firebase/firestore";
 
 const auth = getAuth();
 const db = getFirestore();
 
-export const createRequest = async (startDate, endDate, reqType) => {
+export const createVacationRequest = async (startDate, endDate) => {
     try {
+        const reqType = 'vacation';
         const requestRef = collection(db, 'users', auth.currentUser.uid, 'unreviewedRequests');
         const userRef = doc(db, 'users', auth.currentUser.uid);
         await updateDoc(userRef, {
             hasRequests: true
         });
         await addDoc(requestRef, {
-            startDate: startDate,
-            endDate: endDate,
             requestType: reqType,
             createdAt: serverTimestamp(),
             userUid: auth.currentUser.uid,
-            status: 'onReview'
+            status: 'onReview',
+            startDate: startDate,
+            endDate: endDate
         });
     } catch (error) {
         console.error(error);
@@ -39,7 +40,7 @@ export const reviewRequest = async (userID, requestID, verdict) => {
             status: verdict
         };
         await deleteDoc(requestRef);
-        await addDoc(reviewedRequestRef, updatedRequestSnap);
+        await setDoc(reviewedRequestRef, updatedRequestSnap);
         if ((await getDocs(requestsRef)).empty) await updateDoc(userRef, { hasRequests: false });
     } catch (error) {
         console.error(error);
@@ -74,4 +75,24 @@ export const getUnreviewedRequests = async () => {
     } else {
         throw new Error('You are not an admin.');
     }
+};
+
+export const getMyRequests = async () => {
+    const unrevReqRef = collection(db,'users',auth.currentUser.uid,'unreviewedRequests');
+    const revReqRef = collection(db,'users',auth.currentUser.uid,'reviewedRequests');
+
+    const unrevSnapshot = await getDocs(unrevReqRef);
+    const revSnapshot = await getDocs(revReqRef);
+
+    const requests = {
+        unreviewed: {},
+        reviewed: {}
+    };
+    unrevSnapshot.forEach((doc) => {
+        requests.unreviewed[doc.id] = doc.data();
+    });
+    revSnapshot.forEach((doc) => {
+        requests.reviewed[doc.id] = doc.data();
+    });
+    return requests;
 };

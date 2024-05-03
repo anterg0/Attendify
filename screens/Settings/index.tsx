@@ -9,8 +9,6 @@ const userRepo = new userRepository();
 
 const Settings = ({ navigation }) => {
     const [isLoading, setIsLoading] = useState(false);
-    const firstname = 'Lorem';
-    const surname = 'Ipsum';
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -80,10 +78,7 @@ const Settings = ({ navigation }) => {
       console.error(e);
     }
   };
-  const handleCreate = async () => {
-    const requestRepo = new requestRepository();
-    await requestRepo.createDebug().then(() => {console.log('request created')});
-  };
+
   return (
     <View style={styles.cont}>
         <TouchableOpacity style={styles.button} onPress={handleLogOut}>
@@ -94,9 +89,6 @@ const Settings = ({ navigation }) => {
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={handleRequests}>
             <Text style={styles.buttonText}>Get Requests</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={handleCreate}>
-            <Text style={styles.buttonText}>Create Request</Text>
         </TouchableOpacity>
         {isLoading && (
         <ActivityIndicator

@@ -6,6 +6,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import AdminHome from './screens/AdminHome';
 import CreateUser from './screens/CreateUser';
 import UserHome from './screens/UserHome';
+import RequestScreen from './screens/RequestScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -38,6 +39,11 @@ export default function App() {
           name="UserHome"
           component={UserHome}
           options={{ title: 'User Panel' }} // Set the title for the CreateUser screen
+        />
+        <Stack.Screen
+          name="RequestScreen"
+          component={RequestScreen}
+          options={{ title: 'Requests' }} // Set the title for the CreateUser screen
         />
       </Stack.Navigator>
     </NavigationContainer>

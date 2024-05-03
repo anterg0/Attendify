@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
-import { getFirestore, getDoc, doc } from 'firebase/firestore';
+import { getFirestore, getDoc, doc, serverTimestamp } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 import attendanceRepository from '../../repositories/attandanceRepository';
+import requestRepository from '../../repositories/requestRepository';
 
 const db = getFirestore();
 const auth = getAuth();
 
 const attendRepo = new attendanceRepository();
+const requestRepo = new requestRepository();
  
-const Attend = () => {
+const Attend = ({ navigation }) => {
   const [user, setUser] = useState(null);
   const [hasOngoingAttendance, setHasOngoingAttendance] = useState(false);
   const [isLoading, setLoading] = useState(false);
@@ -48,6 +50,11 @@ const Attend = () => {
       </View>
     );
   }
+  const handleCreate = async () => {
+    setLoading(true);
+    await requestRepo.createVacationRequest(serverTimestamp(), serverTimestamp());
+    setLoading(false);
+  };
 
   const loading = isLoading ? { opacity: 0.5 } : {};
 
@@ -68,6 +75,12 @@ const Attend = () => {
             <Text style={styles.buttonText}>Check In</Text>
           </TouchableOpacity>
         )}
+        <TouchableOpacity style={styles.button} onPress={() => {navigation.navigate('RequestScreen')}}>
+          <Text style={styles.buttonText}>Requests</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={handleCreate}>
+          <Text style={styles.buttonText}>Create Request</Text>
+        </TouchableOpacity>
       </View>
       {isLoading && (
       <ActivityIndicator
@@ -96,6 +109,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 7,
+    marginBottom: 5,
   },
   activityIndicator: {
     position: 'absolute',
