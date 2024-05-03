@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
-import { collection, doc, getDoc, getDocs, getFirestore, setDoc } from 'firebase/firestore';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, reauthenticateWithCredential, updatePassword, EmailAuthProvider, deleteUser } from "firebase/auth";
+import { collection, deleteDoc, doc, getDoc, getDocs, getFirestore, setDoc, updateDoc } from 'firebase/firestore';
 import { Alert } from "react-native";
 
 const firebaseConfig = {
@@ -28,6 +28,44 @@ export const getUser = async (adminUID, targetUID) => {
     } else {
         console.error('You are not an admin.');
         throw new Error('You are not an admin.')
+    }
+};
+
+export const updateUserInfo = async (firstName, lastName) => {
+    try {
+        const userRef = doc(db,'users',auth.currentUser.uid);
+        await updateDoc(userRef, {
+            firstName: firstName,
+            lastName: lastName,
+        });
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+};
+
+export const updateUserPass = async (curPass, newPass) => {
+    try {
+        const creds = EmailAuthProvider.credential(auth.currentUser.email,curPass);
+        await reauthenticateWithCredential(auth.currentUser, creds).then(() => {
+            updatePassword(auth.currentUser, newPass);
+        });
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+};
+
+export const delUser = async () => {
+    try {
+        const userID = auth.currentUser.uid;
+        console.log('aboba');
+        await deleteDoc(doc(db, 'users', userID));
+        console.log('aboba2');
+        await deleteUser(auth.currentUser);
+        console.log('aboba3');
+    } catch (error) {
+        throw error;
     }
 };
 
@@ -68,7 +106,8 @@ export const createUser = (email, password, firstName, lastName) => {
         console.error('Error creating account:', error);
         throw error;
     }
-  };
+};
+
 export const signIn = async (email, password) => {
     try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);

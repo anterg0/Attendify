@@ -1,11 +1,16 @@
 import { getAuth } from "firebase/auth";
 import React, { useState } from "react";
 import { ActivityIndicator, Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import userRepository from "../../repositories/userRepository";
+import requestRepository from "../../repositories/requestRepository";
 
 const auth = getAuth();
+const userRepo = new userRepository();
 
 const Settings = ({ navigation }) => {
     const [isLoading, setIsLoading] = useState(false);
+    const firstname = 'Lorem';
+    const surname = 'Ipsum';
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -25,10 +30,73 @@ const Settings = ({ navigation }) => {
     }
   };
 
+  const handleUpdateUser = async () => {
+    try {
+        setIsLoading(true);
+        // await userRepo.updatePass('testtesttest','testtest');
+        setIsLoading(false);
+        Alert.alert('Success', 'Password successfully changed');
+    } catch (error) {
+        console.error(error);
+        Alert.alert('Error', "Couldn't change pass");
+        setIsLoading(false);
+    }
+  };
+
+  const handlePurge = async () => {
+    Alert.alert(
+      'Confirm',
+      'Are you sure you want to delete your account?',
+      [
+        {
+          text: 'NO',
+          style: 'cancel',
+        },
+        {
+          text: 'YES',
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              setIsLoading(true);
+              await userRepo.deleteUser();
+              console.info(auth.currentUser);
+              setIsLoading(false);
+              navigation.navigate('Login');
+            } catch (error) {
+              throw error;
+            }
+          },
+        },
+      ]
+    );
+    
+  };
+  const handleRequests = async () => {
+    const requestRepo = new requestRepository();
+    try {
+      const requests = await requestRepo.getURequests();
+      console.log(requests);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+  const handleCreate = async () => {
+    const requestRepo = new requestRepository();
+    await requestRepo.createDebug().then(() => {console.log('request created')});
+  };
   return (
     <View style={styles.cont}>
         <TouchableOpacity style={styles.button} onPress={handleLogOut}>
             <Text style={styles.buttonText}>Log Out</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={handlePurge}>
+            <Text style={styles.buttonText}>Purge Account</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={handleRequests}>
+            <Text style={styles.buttonText}>Get Requests</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={handleCreate}>
+            <Text style={styles.buttonText}>Create Request</Text>
         </TouchableOpacity>
         {isLoading && (
         <ActivityIndicator
@@ -69,6 +137,7 @@ const styles = StyleSheet.create({
       paddingHorizontal: 20,
       paddingVertical: 10,
       borderRadius: 7,
+      margin: 10,
     },
     buttonText: {
       color: 'white',

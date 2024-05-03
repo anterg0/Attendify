@@ -1,21 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, ActivityIndicator, StyleSheet, RefreshControl, TouchableOpacity, Platform, Alert } from 'react-native';
+import { View, Text, FlatList, ActivityIndicator, StyleSheet, RefreshControl, TouchableOpacity, Platform, Alert, PermissionsAndroid } from 'react-native';
 import { getFirestore, getDoc, doc } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 import attendanceRepository from '../../repositories/attandanceRepository';
 import { Ionicons } from '@expo/vector-icons';
 import userRepository from '../../repositories/userRepository';
 import { dbDateToJsDate } from '../../services/AttendanceController/AttendanceController';
+import * as FileSystem from 'expo-file-system';
 import { jsonToCSV } from 'react-native-csv';
-import RNFetchBlob from 'rn-fetch-blob';
+import * as Sharing from 'expo-sharing';
 
 
 const attendancesToCSV = (attendanceList) => {
-  const csvData = [
-    ["id", "startDate", "endDate"],
-    ...(attendanceList.map((attendance) => ([attendance.id, dbDateToJsDate(attendance.startDate), dbDateToJsDate(attendance.endDate)])))
-  ];
-  return csvData;
+  const csvData = (attendanceList.map((attendance) => ({id: attendance.id, startDate: dbDateToJsDate(attendance.startDate), endDate: dbDateToJsDate(attendance.endDate)})));
+  return jsonToCSV(csvData);
 };
 
 const db = getFirestore();
@@ -67,27 +65,16 @@ const AttendanceScreen = ({route}) => {
     fetchData(); // Fetch data again
   };
 
-  const downloadCSV = async () => {
+  const saveCSVFile = async () => {
     try {
-      const csvData = attendancesToCSV(attendances); // Assuming this function exists in your code
-      const pathToFolder = RNFetchBlob.fs.dirs.DownloadDir;
-      const filePath = `${pathToFolder}/export.csv`;
-
-      await RNFetchBlob.fs.writeFile(filePath, csvData, 'utf8');
-      console.log('CSV DOWNLOADED');
+      const filePath = `${FileSystem.documentDirectory}/data.csv`;
+      await FileSystem.writeAsStringAsync(filePath, attendancesToCSV(attendances));
+      console.log('File saved successfully:', filePath);
+      await Sharing.shareAsync(`file://${filePath}`);
     } catch (error) {
-      console.error('Error downloading CSV:', error);
+      console.error('Error saving CSV file:', error);
     }
   };
-
-  const csvData = [
-    ["firstname", "lastname", "email"],
-    ["Ahmed", "Tomi", "ah@smthing.co.com"],
-    ["Raed", "Labes", "rl@smthing.co.com"],
-    ["Yezzi", "Min l3b", "ymin@cocococo.com"]
-  ];
-
-  console.log('csv data? ', jsonToCSV(attendances));
 
   // Render loading indicator while data is being fetched
   if (loading) {
@@ -125,7 +112,7 @@ const AttendanceScreen = ({route}) => {
           <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
         }
       />
-      <TouchableOpacity style={styles.button} onPress={downloadCSV}>
+      <TouchableOpacity style={styles.button} onPress={saveCSVFile}>
         <Text style={styles.export}><Ionicons name='download-outline'  size={25}/> Export to CSV</Text>
       </TouchableOpacity>
     </View>
