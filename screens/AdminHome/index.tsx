@@ -4,6 +4,7 @@ import CreateUser from '../CreateUser';
 import CheckUsers from '../CheckUsers';
 import { Ionicons } from '@expo/vector-icons';
 import Settings from '../Settings';
+import RequestScreen from '../RequestScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -19,6 +20,14 @@ const AdminHome = ({ navigation }) => {
     <Tab.Navigator initialRouteName='Users' screenOptions={{
       tabBarActiveTintColor: "#6358EC"
     }}>
+      <Tab.Screen name='Requests' 
+      component={RequestScreen}
+      options={{
+        headerShown: false,
+        tabBarIcon: ({ color, size }) => (
+          <Ionicons name="paper-plane-sharp" color={color} size={size} />
+        ),
+      }}/>
       <Tab.Screen name='Create User' 
       component={CreateUser}
       options={{

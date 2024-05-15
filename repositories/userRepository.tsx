@@ -1,4 +1,4 @@
-import { createUser, delUser, getUser, getUsers, signIn, updateUserInfo, updateUserPass } from "../services/userService/userService";
+import { createUser, delUser, getUser, getUsers, isAdmin, signIn, updateUserInfo, updateUserPass } from "../services/userService/userService";
 
 class userRepository {
     async getUsersFromFirebase(userID) {
@@ -21,6 +21,9 @@ class userRepository {
     }
     async deleteUser() {
       return await delUser();
+    }
+    async isUserAdmin() {
+      return await isAdmin();
     }
   }
   

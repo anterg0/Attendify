@@ -1,14 +1,14 @@
-import { createVacationRequest, getMyRequests, getUnreviewedRequests } from "../services/requestService/requestService";
+import { createVacationRequest, getRequests, reviewRequest } from "../services/requestService/requestService";
 
 class requestRepository {
-    async getURequests() {
-        return await getUnreviewedRequests();
-    }
     async createVacationRequest(startDate, endDate) {
         return await createVacationRequest(startDate, endDate);
     }
     async getRequests() {
-        return await getMyRequests();
+        return await getRequests();
+    }
+    async review(userID, requestID, verdict) {
+        return await reviewRequest(userID, requestID, verdict);
     }
   }
   

@@ -48,7 +48,7 @@ export const reviewRequest = async (userID, requestID, verdict) => {
     }
 };
 
-export const getUnreviewedRequests = async () => {
+export const getRequests = async () => {
     const userRef = doc(db, 'users', auth.currentUser.uid);
     const userType = (await getDoc(userRef)).data().type;
     if (userType === 'admin') {
@@ -73,26 +73,13 @@ export const getUnreviewedRequests = async () => {
             throw e;
         }
     } else {
-        throw new Error('You are not an admin.');
+        const unrevReqRef = collection(db,'users',auth.currentUser.uid,'unreviewedRequests');
+        const revReqRef = collection(db,'users',auth.currentUser.uid,'reviewedRequests');
+    
+        const unrevSnapshot = await getDocs(unrevReqRef);
+        const revSnapshot = await getDocs(revReqRef);
+        
+        const requests = [...unrevSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })), ...revSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))];
+        return requests;
     }
-};
-
-export const getMyRequests = async () => {
-    const unrevReqRef = collection(db,'users',auth.currentUser.uid,'unreviewedRequests');
-    const revReqRef = collection(db,'users',auth.currentUser.uid,'reviewedRequests');
-
-    const unrevSnapshot = await getDocs(unrevReqRef);
-    const revSnapshot = await getDocs(revReqRef);
-
-    const requests = {
-        unreviewed: {},
-        reviewed: {}
-    };
-    unrevSnapshot.forEach((doc) => {
-        requests.unreviewed[doc.id] = doc.data();
-    });
-    revSnapshot.forEach((doc) => {
-        requests.reviewed[doc.id] = doc.data();
-    });
-    return requests;
 };

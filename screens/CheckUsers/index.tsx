@@ -57,7 +57,7 @@ const CheckUsers = ({ navigation }) => {
         renderItem={({ item }) => (
           <TouchableOpacity onPress={() => navigation.navigate('AttendanceScreen', { userID: item.id })}>
             <View style={[styles.item, item.isCheckedIn && styles.userIsCheckedIn]}>
-              <Text>{item.firstName} {item.lastName}</Text>
+              <Text style={[item.isCheckedIn && styles.textIsCheckedIn]}>{item.firstName} {item.lastName}</Text>
             </View>
           </TouchableOpacity>
         )}
@@ -95,6 +95,11 @@ const styles = StyleSheet.create({
   },
   userIsCheckedIn: {
     borderColor: '#6358EC',
+    backgroundColor: '#6358EC',
+  },
+  textIsCheckedIn: {
+    color: 'white',
+    fontWeight: 'bold',
   }
 });
 

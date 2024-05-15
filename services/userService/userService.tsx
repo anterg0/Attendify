@@ -1,4 +1,3 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, reauthenticateWithCredential, updatePassword, EmailAuthProvider, deleteUser } from "firebase/auth";
 import { collection, deleteDoc, doc, getDoc, getDocs, getFirestore, setDoc, updateDoc } from 'firebase/firestore';
@@ -59,11 +58,8 @@ export const updateUserPass = async (curPass, newPass) => {
 export const delUser = async () => {
     try {
         const userID = auth.currentUser.uid;
-        console.log('aboba');
         await deleteDoc(doc(db, 'users', userID));
-        console.log('aboba2');
         await deleteUser(auth.currentUser);
-        console.log('aboba3');
     } catch (error) {
         throw error;
     }
@@ -153,4 +149,11 @@ export const signIn = async (email, password) => {
 
     Alert.alert('Authentication Error', errorMessage);
     }
+};
+
+export const isAdmin = async () => {
+    const userRef = doc(db, 'users', auth.currentUser.uid);
+    const userSnap = await getDoc(userRef);
+    if (userSnap.data().type === 'admin') return true;
+    return false;
 };

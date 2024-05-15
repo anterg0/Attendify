@@ -72,7 +72,7 @@ const Settings = ({ navigation }) => {
   const handleRequests = async () => {
     const requestRepo = new requestRepository();
     try {
-      const requests = await requestRepo.getURequests();
+      const requests = await requestRepo.getRequests();
       console.log(requests);
     } catch (e) {
       console.error(e);
