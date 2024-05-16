@@ -9,12 +9,13 @@ import { dbDateToJsDate } from '../../services/AttendanceController/AttendanceCo
 import * as FileSystem from 'expo-file-system';
 import { jsonToCSV } from 'react-native-csv';
 import * as Sharing from 'expo-sharing';
+import { SerializeAttendancesToCSV } from 'attendify_serializer';
 
 
-const attendancesToCSV = (attendanceList) => {
-  const csvData = (attendanceList.map((attendance) => ({id: attendance.id, startDate: dbDateToJsDate(attendance.startDate), endDate: dbDateToJsDate(attendance.endDate)})));
-  return jsonToCSV(csvData);
-};
+// const attendancesToCSV = (attendanceList) => {
+//   const csvData = (attendanceList.map((attendance) => ({id: attendance.id, startDate: dbDateToJsDate(attendance.startDate), endDate: dbDateToJsDate(attendance.endDate)})));
+//   return jsonToCSV(csvData);
+// };
 
 const db = getFirestore();
 const auth = getAuth();
@@ -68,7 +69,7 @@ const AttendanceScreen = ({route}) => {
   const saveCSVFile = async () => {
     try {
       const filePath = `${FileSystem.documentDirectory}/data.csv`;
-      await FileSystem.writeAsStringAsync(filePath, attendancesToCSV(attendances));
+      await FileSystem.writeAsStringAsync(filePath, SerializeAttendancesToCSV(attendances));
       console.log('File saved successfully:', filePath);
       await Sharing.shareAsync(`file://${filePath}`);
     } catch (error) {

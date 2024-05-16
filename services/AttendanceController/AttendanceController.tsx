@@ -1,3 +1,4 @@
+import { SnapshotDataToId } from "attendify_serializer";
 import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, getFirestore, serverTimestamp, setDoc, updateDoc } from "firebase/firestore";
 
 const db = getFirestore();
@@ -42,7 +43,8 @@ export const checkOut = async (userID) => {
 export const getAttendances = async (userID) => {
   const attendanceRef = collection(db, 'users', userID, 'attendances');
   const snapshot = await getDocs(attendanceRef);
-  const attendanceList = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  // const attendanceList = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  const attendanceList = SnapshotDataToId(snapshot);
   attendanceList.sort((a, b) => {
     const aStartDate = a.startDate.toDate();
     const bStartDate = b.startDate.toDate();

@@ -1,3 +1,4 @@
+import { SnapshotDataToId } from "attendify_serializer";
 import { getAuth } from "firebase/auth";
 import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, getFirestore, serverTimestamp, setDoc, updateDoc } from "firebase/firestore";
 
@@ -55,14 +56,14 @@ export const getRequests = async () => {
         try {
             const usersRef = collection(db, 'users');
             const snapshot = await getDocs(usersRef);
-            const userList = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            const userList = SnapshotDataToId(snapshot);
             const unreviewedRequests = [];
 
             for (const user of userList) {
                 if (user.hasRequests) {
                     const requestsRef = collection(db, 'users', user.id, 'unreviewedRequests');
                     const requestsSnapshot = await getDocs(requestsRef);
-                    const requestsList = requestsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    const requestsList = SnapshotDataToId(requestsSnapshot);
                     unreviewedRequests.push(...requestsList);
                 }
             }
@@ -79,7 +80,7 @@ export const getRequests = async () => {
         const unrevSnapshot = await getDocs(unrevReqRef);
         const revSnapshot = await getDocs(revReqRef);
         
-        const requests = [...unrevSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })), ...revSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))];
+        const requests = [...SnapshotDataToId(unrevSnapshot), ...SnapshotDataToId(revSnapshot)];
         return requests;
     }
 };
