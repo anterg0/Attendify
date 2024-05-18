@@ -2,7 +2,6 @@ import { getAuth } from "firebase/auth";
 import React, { useState } from "react";
 import { ActivityIndicator, Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import userRepository from "../../repositories/userRepository";
-import { Firestore, serverTimestamp } from "firebase/firestore";
 
 const auth = getAuth();
 const userRepo = new userRepository();
@@ -25,19 +24,6 @@ const Settings = ({ navigation }) => {
     } catch (error) {
         console.error(error);
         Alert.alert('Error', "Couldn't log out.");
-    }
-  };
-
-  const handleUpdateUser = async () => {
-    try {
-        setIsLoading(true);
-        // await userRepo.updatePass('testtesttest','testtest');
-        setIsLoading(false);
-        Alert.alert('Success', 'Password successfully changed');
-    } catch (error) {
-        console.error(error);
-        Alert.alert('Error', "Couldn't change pass");
-        setIsLoading(false);
     }
   };
 
@@ -69,9 +55,6 @@ const Settings = ({ navigation }) => {
     );
     
   };
-  const handleRequests = async () => {
-    
-  };
 
   return (
     <View style={styles.cont}>
@@ -80,9 +63,6 @@ const Settings = ({ navigation }) => {
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={handlePurge}>
             <Text style={styles.buttonText}>Purge Account</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={handleRequests}>
-            <Text style={styles.buttonText}>Get Requests</Text>
         </TouchableOpacity>
         {isLoading && (
         <ActivityIndicator
@@ -96,14 +76,6 @@ const Settings = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-    input: {
-      height: 40,
-      margin: 7,
-      borderWidth: 1,
-      borderRadius: 7,
-      padding: 10,
-      minWidth: "60%",
-    },
     cont: {
       alignItems: 'center',
       justifyContent: 'center',
@@ -119,14 +91,15 @@ const styles = StyleSheet.create({
       alignItems: 'center',
     },
     button: {
-      backgroundColor: '#6358EC',
-      paddingHorizontal: 20,
-      paddingVertical: 10,
-      borderRadius: 7,
-      margin: 10,
+      height: 40,
+      width: '100%',
+      borderWidth: 1,
+      borderColor: '#6358EC',
+      margin: -0.3,
+      alignItems: 'center',
+      justifyContent: 'center',
     },
     buttonText: {
-      color: 'white',
       fontWeight: 'bold',
     },
 });

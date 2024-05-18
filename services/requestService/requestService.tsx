@@ -67,7 +67,7 @@ export const getRequests = async () => {
                     unreviewedRequests.push(...requestsList);
                 }
             }
-
+            unreviewedRequests.sort((a,b) => a.createdAt - b.createdAt);
             return unreviewedRequests;
         } catch (e) {
             console.error(e);
@@ -81,6 +81,7 @@ export const getRequests = async () => {
         const revSnapshot = await getDocs(revReqRef);
         
         const requests = [...SnapshotDataToId(unrevSnapshot), ...SnapshotDataToId(revSnapshot)];
+        requests.sort((a, b) => b.createdAt - a.createdAt);
         return requests;
     }
 };

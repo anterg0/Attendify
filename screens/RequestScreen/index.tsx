@@ -60,7 +60,7 @@ const RequestScreen = ({ navigation }) => {
           <Text>{`${requestType.toUpperCase()}\nFrom: ${DeserializeDate(startDate)} Until: ${DeserializeDate(endDate)}`}</Text>
         </View>
         <View style={[styles.bottomContainer, styles[status]]}>
-          <Text style={styles[`${status}Text`]}>
+          <Text style={[styles[`${status}Text`], styles.textStyle]}>
             {status === 'onReview' ? 'in review' : status}
           </Text>
         </View>
@@ -148,18 +148,19 @@ const styles = StyleSheet.create({
   button: {
     flex: 1,
     backgroundColor: '#6358EC',
-    height: 30,
+    height: 35,
     justifyContent: 'center',
     alignItems: 'center',
   },
   buttonText: {
     color: 'white',
     fontWeight: 'bold',
+    textTransform: 'uppercase',
+    fontSize: 16,
   },
   container: {
     flex: 1,
     padding: 20,
-    // alignItems: 'center',
     justifyContent: 'center',
   },
   approved: {
@@ -175,20 +176,19 @@ const styles = StyleSheet.create({
   onReview: {
 
   },
-  approvedText: {
-    color: 'white',
+  textStyle: {
     fontWeight: 'bold',
     textTransform: 'uppercase',
+    fontSize: 18,
+  },
+  approvedText: {
+    color: 'white',
   },
   rejectedText: {
     color: 'white',
-    fontWeight: 'bold',
-    textTransform: 'uppercase',
   },
   onReviewText: {
     color: 'black',
-    fontWeight: 'bold',
-    textTransform: 'uppercase',
   },
   approvedMainContainer: {
     borderColor: '#6358EC',
@@ -200,7 +200,7 @@ const styles = StyleSheet.create({
 
   },
   heading: {
-    fontSize: 20,
+    fontSize: 25,
     fontWeight: 'bold',
     marginBottom: 16,
   },
@@ -224,7 +224,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   bottomContainer: {
-    height: 30,
+    height: 35,
     alignItems: 'center',
     borderWidth: 1,
     borderColor: '#ddd',
