@@ -9,23 +9,19 @@ const repo = new userRepository();
 const CheckUsers = ({ navigation }) => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false); // Add refreshing state
-  // query-tanstack
-  // Fetch users from Firestore
+  const [refreshing, setRefreshing] = useState(false);
+
   const fetchData = async () => {
-    // const userList = await getUsers(getAuth().currentUser.uid);
     const userList = await repo.getUsersFromFirebase(getAuth().currentUser.uid);
     setUsers(userList);
     setLoading(false);
     setRefreshing(false);
   };
 
-  // Fetch data on initial load and when screen comes into focus
   useEffect(() => {
     fetchData();
   }, []);
 
-  // Use useFocusEffect to refetch data when screen comes into focus
   useFocusEffect(
     React.useCallback(() => {
       fetchData();

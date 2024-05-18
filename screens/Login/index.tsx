@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { SafeAreaView, StyleSheet, TextInput, ActivityIndicator, TouchableOpacity, Text, View } from 'react-native';
+import { SafeAreaView, StyleSheet, TextInput, ActivityIndicator, TouchableOpacity, Text } from 'react-native';
 import 'firebase/auth';
 import userRepository from '../../repositories/userRepository';
-import { Ionicons } from '@expo/vector-icons';
 
 const repo = new userRepository();
 

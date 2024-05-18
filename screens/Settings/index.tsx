@@ -2,7 +2,7 @@ import { getAuth } from "firebase/auth";
 import React, { useState } from "react";
 import { ActivityIndicator, Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import userRepository from "../../repositories/userRepository";
-import requestRepository from "../../repositories/requestRepository";
+import { Firestore, serverTimestamp } from "firebase/firestore";
 
 const auth = getAuth();
 const userRepo = new userRepository();
@@ -70,13 +70,7 @@ const Settings = ({ navigation }) => {
     
   };
   const handleRequests = async () => {
-    const requestRepo = new requestRepository();
-    try {
-      const requests = await requestRepo.getRequests();
-      console.log(requests);
-    } catch (e) {
-      console.error(e);
-    }
+    
   };
 
   return (

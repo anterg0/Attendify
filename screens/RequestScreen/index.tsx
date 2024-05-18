@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { View, Text, FlatList, StyleSheet, ActivityIndicator, TouchableOpacity, RefreshControl } from 'react-native';
 import { getAuth } from 'firebase/auth';
-import { dbDateToJsDate } from '../../services/AttendanceController/AttendanceController';
 import requestRepository from '../../repositories/requestRepository';
 import userRepository from '../../repositories/userRepository';
 import { DeserializeDate } from 'attendify_serializer';
@@ -14,22 +13,28 @@ const RequestScreen = ({ navigation }) => {
   const [isAdmin, setAdmin] = useState(false);
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [startup, setStartup] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const fetchRequests = async () => {
+    const isUserAnAdmin = await userRepo.isUserAdmin();
+    setAdmin(isUserAnAdmin);
+    const requestData = await reqRepo.getRequests();
+    setRequests(requestData);
+    setStartup(false);
+    setRefreshing(false);
+  };
 
   useEffect(() => {
-    // Fetch the list of requests from Firestore
-    const fetchRequests = async () => {
-      setLoading(true);
-      const isUserAnAdmin = await userRepo.isUserAdmin();
-      setAdmin(isUserAnAdmin);
-      const requestData = await reqRepo.getRequests();
-      setRequests(requestData);
-      setLoading(false);
-    };
-
     fetchRequests();
   }, []);
 
-  if (loading) {
+  const handleRefresh = () => {
+    setRefreshing(true); // Set refreshing to true when pulling to refresh
+    fetchRequests(); // Fetch data again
+  };
+
+  if (startup) {
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color="#6358EC" />
@@ -37,11 +42,13 @@ const RequestScreen = ({ navigation }) => {
     );
   }
 
-  const handleApprove = async (userID, reqID) => {
-    await reqRepo.review(userID, reqID, 'approved');
-  };
-  const handleReject = async (userID, reqID) => {
-    await reqRepo.review(userID, reqID, 'rejected');
+  const isLoading = loading ? { opacity: 0.5 } : {};
+
+  const handleReview = async (userID, reqID, verdict) => {
+    setLoading(true);
+    await reqRepo.review(userID, reqID, verdict);
+    await fetchRequests();
+    setLoading(false);
   };
   const renderRequestItem = ({ item }) => {
     // Extract the fields from the item
@@ -69,16 +76,16 @@ const RequestScreen = ({ navigation }) => {
         <View style={styles.topContainer}>
           <Text>Request Type: {requestType}</Text>
           <Text>User Name: {userUid}</Text>
-          <Text>Start Date: {dbDateToJsDate(startDate)}</Text>
-          <Text>End Date: {dbDateToJsDate(endDate)}</Text>
+          <Text>Start Date: {DeserializeDate(startDate)}</Text>
+          <Text>End Date: {DeserializeDate(endDate)}</Text>
         </View>
 
         <View style={styles.buttonContainer}>
-            <TouchableOpacity style={[styles.button, {borderBottomLeftRadius: 13}]} onPress={() => handleApprove(userUid, id)}>
+            <TouchableOpacity style={[styles.button, {borderBottomLeftRadius: 13}]} onPress={() => handleReview(userUid, id, 'approved')}>
               <Text style={styles.buttonText}>Approve</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={[styles.button, {backgroundColor: 'red', borderBottomRightRadius: 13}]} onPress={() => handleReject(userUid, id)}>
+            <TouchableOpacity style={[styles.button, {backgroundColor: 'red', borderBottomRightRadius: 13}]} onPress={() => handleReview(userUid, id, 'rejected')}>
               <Text style={styles.buttonText}>Reject</Text>
             </TouchableOpacity>
         </View>
@@ -94,24 +101,46 @@ const RequestScreen = ({ navigation }) => {
           data={requests}
           keyExtractor={(item) => item}
           renderItem={renderRequestItem}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+          }
         />
       </View>
     );
   } else {
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, isLoading]}>
         <Text style={styles.heading}>Unreviewed Requests</Text>
         <FlatList
           data={requests}
           keyExtractor={(item) => item}
           renderItem={renderUnreviewedItems}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+          }
         />
+      {loading && (
+        <ActivityIndicator
+          style={styles.activityIndicator}
+          size="large"
+          color="#6358EC"
+        />
+      )}        
       </View>
     );
   }
 };
 
 const styles = StyleSheet.create({
+  activityIndicator: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   buttonContainer: {
     flexDirection: 'row',
     marginTop: 10,
@@ -129,7 +158,8 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    alignItems: 'center',
+    padding: 20,
+    // alignItems: 'center',
     justifyContent: 'center',
   },
   approved: {
@@ -170,7 +200,7 @@ const styles = StyleSheet.create({
 
   },
   heading: {
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 16,
   },
@@ -180,7 +210,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   mainContainer: {
-    width: 330,
+    flex: 1, 
     height: 130,
     borderWidth: 1,
     borderColor: '#ddd',
@@ -189,7 +219,7 @@ const styles = StyleSheet.create({
   },
   topContainer: {
     flex: 1,
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
     padding: 5,
     alignItems: 'center',
   },

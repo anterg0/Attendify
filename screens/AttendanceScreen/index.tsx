@@ -1,21 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, ActivityIndicator, StyleSheet, RefreshControl, TouchableOpacity, Platform, Alert, PermissionsAndroid } from 'react-native';
+import { View, Text, FlatList, ActivityIndicator, StyleSheet, RefreshControl, TouchableOpacity } from 'react-native';
 import { getFirestore, getDoc, doc } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 import attendanceRepository from '../../repositories/attandanceRepository';
 import { Ionicons } from '@expo/vector-icons';
 import userRepository from '../../repositories/userRepository';
-import { dbDateToJsDate } from '../../services/AttendanceController/AttendanceController';
 import * as FileSystem from 'expo-file-system';
-import { jsonToCSV } from 'react-native-csv';
 import * as Sharing from 'expo-sharing';
-import { SerializeAttendancesToCSV } from 'attendify_serializer';
-
-
-// const attendancesToCSV = (attendanceList) => {
-//   const csvData = (attendanceList.map((attendance) => ({id: attendance.id, startDate: dbDateToJsDate(attendance.startDate), endDate: dbDateToJsDate(attendance.endDate)})));
-//   return jsonToCSV(csvData);
-// };
+import { DeserializeDate, SerializeAttendancesToCSV } from 'attendify_serializer';
 
 const db = getFirestore();
 const auth = getAuth();
@@ -29,7 +21,6 @@ const AttendanceScreen = ({route}) => {
   const [refreshing, setRefreshing] = useState(false);
   const [userCred, setUserCred] = useState(null);
 
-  // Fetch attendances from Firestore
   const fetchData = async () => {
     const currentUserID = auth.currentUser.uid;
     const userDocRef = doc(db,'users',currentUserID);
@@ -60,10 +51,9 @@ const AttendanceScreen = ({route}) => {
     fetchData();
   }, []);
 
-  // Handle pull-to-refresh
   const handleRefresh = () => {
-    setRefreshing(true); // Set refreshing to true when pulling to refresh
-    fetchData(); // Fetch data again
+    setRefreshing(true);
+    fetchData();
   };
 
   const saveCSVFile = async () => {
@@ -77,7 +67,6 @@ const AttendanceScreen = ({route}) => {
     }
   };
 
-  // Render loading indicator while data is being fetched
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
@@ -100,8 +89,8 @@ const AttendanceScreen = ({route}) => {
             <View style={styles.item}>
               {item.startDate && item.endDate && item.startDate.seconds && item.endDate.seconds ? (
                 <React.Fragment>
-                  <Text>Start Date: {dbDateToJsDate(item.startDate)}</Text>
-                  <Text>End Date: {dbDateToJsDate(item.endDate)}</Text>
+                  <Text>Start Date: {DeserializeDate(item.startDate)}</Text>
+                  <Text>End Date: {DeserializeDate(item.endDate)}</Text>
                 </React.Fragment>
               ) : (
                 <Text>Error: Missing date data</Text>
