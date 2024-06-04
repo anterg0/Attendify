@@ -7,7 +7,7 @@ import { Ionicons } from '@expo/vector-icons';
 import userRepository from '../../repositories/userRepository';
 import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
-import { DeserializeDate, SerializeAttendancesToCSV } from 'attendify_serializer';
+import { DeserializeDate, DeserializeDateTime, SerializeAttendancesToCSV } from 'attendify_serializer';
 
 const db = getFirestore();
 const auth = getAuth();
@@ -89,8 +89,8 @@ const AttendanceScreen = ({route}) => {
             <View style={styles.item}>
               {item.startDate && item.endDate && item.startDate.seconds && item.endDate.seconds ? (
                 <React.Fragment>
-                  <Text>Start Date: {DeserializeDate(item.startDate)}</Text>
-                  <Text>End Date: {DeserializeDate(item.endDate)}</Text>
+                  <Text>Start Date: {DeserializeDateTime(item.startDate)}</Text>
+                  <Text>End Date: {DeserializeDateTime(item.endDate)}</Text>
                 </React.Fragment>
               ) : (
                 <Text>Error: Missing date data</Text>

@@ -12,17 +12,18 @@ const Login = ({ navigation }) => {
   const [isEmailFocused, setIsEmailFocused] = useState(false);
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
 
+
   const handleLogin = () => {
     setIsLoading(true);
     repo.signInWithFirebase(email, password)
       .then((userCred) => {
         if (userCred.type == 'admin') {
           console.log('Admin signed in successfully!');
-          navigation.navigate('AdminHome');
+          navigation.replace('AdminHome');
           return;
         }
         console.log('User signed in successfully!');
-        navigation.navigate('UserHome');
+        navigation.replace('UserHome');
       })
       .finally(() => setIsLoading(false));
   };

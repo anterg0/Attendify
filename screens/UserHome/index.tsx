@@ -1,9 +1,11 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import Attend from '../Attend';
 import AttendanceScreen from '../AttendanceScreen';
 import Settings from '../Settings';
+import RequestScreen from '../RequestScreen';
+import { StackActions } from '@react-navigation/native';
 
 const Tab = createBottomTabNavigator();
 
@@ -35,7 +37,18 @@ const UserHome = ({ navigation }) => {
           tabBarIcon: ({ color, size }) => (
             <Ionicons name='home-sharp' color={color} size={size} />
           ),
-        }}/>
+        }}
+      />
+      <Tab.Screen
+      name='Requests'
+      component={RequestScreen}
+      options={{
+        headerShown: false,
+        tabBarIcon: ({ color, size }) => (
+          <Ionicons name='document-text-sharp' color={color} size={size}/>
+        )
+      }}
+      />
       <Tab.Screen
       name='Settings'
       component={Settings}

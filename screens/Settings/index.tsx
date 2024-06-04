@@ -20,7 +20,7 @@ const Settings = ({ navigation }) => {
         setIsLoading(true);
         await auth.signOut();
         setIsLoading(false);
-        navigation.navigate('Login');
+        navigation.replace('Login');
     } catch (error) {
         console.error(error);
         Alert.alert('Error', "Couldn't log out.");
@@ -45,7 +45,7 @@ const Settings = ({ navigation }) => {
               await userRepo.deleteUser();
               console.info(auth.currentUser);
               setIsLoading(false);
-              navigation.navigate('Login');
+              navigation.replace('Login');
             } catch (error) {
               throw error;
             }

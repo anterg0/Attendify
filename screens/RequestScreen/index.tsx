@@ -30,8 +30,8 @@ const RequestScreen = ({ navigation }) => {
   }, []);
 
   const handleRefresh = () => {
-    setRefreshing(true); // Set refreshing to true when pulling to refresh
-    fetchRequests(); // Fetch data again
+    setRefreshing(true); 
+    fetchRequests();
   };
 
   if (startup) {
@@ -105,6 +105,9 @@ const RequestScreen = ({ navigation }) => {
             <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
           }
         />
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('CreateRequest')}>
+          <Text style={styles.buttonText}>Create Request</Text>
+        </TouchableOpacity>
       </View>
     );
   } else {
@@ -146,16 +149,19 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   button: {
-    flex: 1,
     backgroundColor: '#6358EC',
-    height: 35,
-    justifyContent: 'center',
-    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 7,
+    marginBottom: 5,
+    minHeight: 40,
+    marginVertical: 20,
   },
   buttonText: {
     color: 'white',
     fontWeight: 'bold',
     textTransform: 'uppercase',
+    textAlign: 'center',
     fontSize: 16,
   },
   container: {

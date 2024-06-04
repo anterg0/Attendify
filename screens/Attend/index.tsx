@@ -75,12 +75,6 @@ const Attend = ({ navigation }) => {
             <Text style={styles.buttonText}>Check In</Text>
           </TouchableOpacity>
         )}
-        <TouchableOpacity style={styles.button} onPress={() => {navigation.navigate('RequestScreen')}}>
-          <Text style={styles.buttonText}>Requests</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={handleCreate}>
-          <Text style={styles.buttonText}>Create Request</Text>
-        </TouchableOpacity>
       </View>
       {isLoading && (
       <ActivityIndicator

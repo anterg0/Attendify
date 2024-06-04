@@ -7,6 +7,7 @@ import AdminHome from './screens/AdminHome';
 import CreateUser from './screens/CreateUser';
 import UserHome from './screens/UserHome';
 import RequestScreen from './screens/RequestScreen';
+import CreateRequest from './screens/CreateRequest';
 
 const Stack = createNativeStackNavigator();
 
@@ -18,32 +19,32 @@ export default function App() {
         <Stack.Screen
           name="Login"
           component={Login}
-          options={{ title: 'Login Screen' }} // Set the title for the Login screen
+          options={{ title: 'Login Screen' }}
         />
         <Stack.Screen
           name="AttendanceScreen"
           component={AttendanceScreen}
-          options={{ title: 'Attendance Screen' }} // Set the title for the AttendanceScreen
+          options={{ title: 'Attendance Screen' }}
         />
         <Stack.Screen
           name="AdminHome"
           component={AdminHome}
-          options={{ title: 'Admin Panel' }} // Set the title for the AdminHome screen
+          options={{ title: 'Admin Panel' }}
         />
         <Stack.Screen
           name="CreateUser"
           component={CreateUser}
-          options={{ title: 'Create User' }} // Set the title for the CreateUser screen
+          options={{ title: 'Create User' }}
         />
         <Stack.Screen
           name="UserHome"
           component={UserHome}
-          options={{ title: 'User Panel' }} // Set the title for the CreateUser screen
+          options={{ title: 'User Panel' }}
         />
         <Stack.Screen
-          name="RequestScreen"
-          component={RequestScreen}
-          options={{ title: 'Requests' }} // Set the title for the CreateUser screen
+          name="CreateRequest"
+          component={CreateRequest}
+          options={{ title: '' }}
         />
       </Stack.Navigator>
     </NavigationContainer>
