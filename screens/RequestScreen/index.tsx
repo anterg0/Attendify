@@ -25,11 +25,6 @@ const RequestScreen = ({ navigation }) => {
     setRefreshing(false);
   };
 
-  const getUsersName = async ( uid ) => {
-    const user = await userRepo.getUserFromFirebase(auth.currentUser.uid, uid);
-    return `${user.firstName} ${user.lastName}`;
-  };
-
   useEffect(() => {
     fetchRequests();
   }, []);
@@ -81,13 +76,12 @@ const RequestScreen = ({ navigation }) => {
 
   const renderUnreviewedItems = ({ item }) => {
 
-    const { id, requestType, createdAt, userUid, status, startDate, endDate } = item;
-    const fullName = getUsersName(userUid);
+    const { id, requestType, createdAt, userUid, status, startDate, endDate, userFullName } = item;
     return (
       <View style={styles.mainContainer}>
         <View style={styles.topContainer}>
           <Text style={styles.sub}>Requested By:</Text>
-          <Text style={styles.sub2}>{fullName}</Text>
+          <Text style={styles.sub2}>{userFullName}</Text>
           <Text style={styles.sub}>Request Type:</Text>
           <Text style={styles.sub2}>{requestType}</Text>
           <Text style={styles.sub}>Start Date:</Text>

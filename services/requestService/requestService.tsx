@@ -14,6 +14,7 @@ export const createVacationRequest = async (startDate, endDate) => {
             hasRequests: true
         });
         await addDoc(requestRef, {
+            userFullName: auth.currentUser.displayName,
             requestType: reqType,
             createdAt: serverTimestamp(),
             userUid: auth.currentUser.uid,

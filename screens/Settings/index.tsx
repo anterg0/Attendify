@@ -4,12 +4,20 @@ import { ActivityIndicator, Alert, Image, StyleSheet, Text, TouchableOpacity, Vi
 import userRepository from "../../repositories/userRepository";
 import { Ionicons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useFocusEffect } from "@react-navigation/native";
 
 const auth = getAuth();
 const userRepo = new userRepository();
 
 const Settings = ({ navigation }) => {
    const [isLoading, setIsLoading] = useState(false);
+   const [displayName, setDisplayName] = useState('');
+
+   useFocusEffect(
+    React.useCallback(() => {
+      setDisplayName(auth.currentUser.displayName);
+    }, [])
+  );
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -63,7 +71,7 @@ const Settings = ({ navigation }) => {
           <Ionicons name="person-circle-sharp" size={100} color={'gray'}/>
         </View>
         <View style={styles.userInfoContainer}>
-          <Text style={styles.userName}>{auth.currentUser.displayName || `You don't have a display name`}</Text>
+          <Text style={styles.userName}>{displayName || `You don't have a display name`}</Text>
           <Text style={styles.userEmail}>{auth.currentUser.email}</Text>
         </View>
       </View>
