@@ -1,11 +1,11 @@
-import { createUser, delUser, getUser, getUsers, isAdmin, signIn, updateUserInfo, updateUserPass } from "../services/userService/userService";
+import { createUser, delUser, getMyself, getUser, getUsers, isAdmin, signIn, updateUserInfo, updateUserPass } from "../services/userService/userService";
 
 class userRepository {
     async getUsersFromFirebase(userID) {
       return await getUsers(userID);
     }
     async createUserInFirebase(email, password, firstName, lastName) {
-      return createUser(email, password, firstName, lastName);
+      return await createUser(email, password, firstName, lastName);
     }
     async signInWithFirebase(email, password) {
       return await signIn(email, password);
@@ -24,6 +24,9 @@ class userRepository {
     }
     async isUserAdmin() {
       return await isAdmin();
+    }
+    async getMe() {
+      return await getMyself();
     }
   }
   

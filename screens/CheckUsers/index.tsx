@@ -61,6 +61,9 @@ const CheckUsers = ({ navigation }) => {
           <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
         }
       />
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('CreateUser')}>
+        <Text style={styles.buttonText}>Create User</Text>
+        </TouchableOpacity>
     </View>
   );
 };
@@ -96,7 +99,23 @@ const styles = StyleSheet.create({
   textIsCheckedIn: {
     color: 'white',
     fontWeight: 'bold',
-  }
+  },
+  button: {
+    backgroundColor: '#6358EC',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 7,
+    marginBottom: 5,
+    minHeight: 40,
+    marginVertical: 20,
+  },
+  buttonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    textTransform: 'uppercase',
+    textAlign: 'center',
+    fontSize: 16,
+  },
 });
 
 export default CheckUsers;

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SafeAreaView, StyleSheet, TextInput, ActivityIndicator, TouchableOpacity, Text } from 'react-native';
+import { SafeAreaView, StyleSheet, TextInput, ActivityIndicator, TouchableOpacity, Text, View, Image } from 'react-native';
 import 'firebase/auth';
 import userRepository from '../../repositories/userRepository';
 
@@ -32,6 +32,8 @@ const Login = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.cont}>
+      <Text style={styles.title}>👮🏻‍♂️Attendify</Text>
+      <Text style={styles.subtitle}>Employee attendance tracking system</Text>
       <TextInput
         style={[styles.input, loginInputStyle, isEmailFocused && styles.inputFocused]}
         onChangeText={onChangeText}
@@ -68,6 +70,15 @@ const Login = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  title : {
+    fontSize: 30,
+    fontWeight: 'bold',
+  },
+  subtitle : {
+    fontSize: 13,
+    fontWeight: 'bold',
+    fontStyle: 'italic',
+  },
   input: {
     height: 40,
     margin: 7,

@@ -1,7 +1,8 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, reauthenticateWithCredential, updatePassword, EmailAuthProvider, deleteUser } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, reauthenticateWithCredential, updatePassword, EmailAuthProvider, deleteUser, initializeAuth, updateProfile } from "firebase/auth";
 import { collection, deleteDoc, doc, getDoc, getDocs, getFirestore, setDoc, updateDoc } from 'firebase/firestore';
 import { Alert } from "react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const firebaseConfig = {
   apiKey: "AIzaSyDfyM_pSJ79bBQywoEzB5Le6eZUWrFplvc",
@@ -37,6 +38,7 @@ export const updateUserInfo = async (firstName, lastName) => {
             firstName: firstName,
             lastName: lastName,
         });
+        await updateProfile(auth.currentUser, { displayName: `${firstName} ${lastName}` });
     } catch (error) {
         console.error(error);
         throw error;
@@ -79,29 +81,33 @@ export const getUsers = async (userID) => {
     }
 };
 
-export const createUser = (email, password, firstName, lastName) => {
+export const createUser = async (email, password, firstName, lastName) => {
     try {
         const db = getFirestore();
         const secondaryApp = initializeApp(firebaseConfig, "Secondary");
-        createUserWithEmailAndPassword(getAuth(secondaryApp), email, password).then((userCredentials) => {
+        const { user } = await createUserWithEmailAndPassword(
+          getAuth(secondaryApp),
+          email,
+          password
+        );
+        await updateProfile(user, {
+          displayName: `${firstName} ${lastName}`,
+        });
         const usersCollection = collection(db, 'users');
         const newUser = {
-            firstName: firstName,
-            lastName: lastName,
-            type: 'user'
+          firstName,
+          lastName,
+          type: 'user',
         };
-        const addToDB = async () => {
-            const newDoc = doc(usersCollection, userCredentials.user.uid);
-            await setDoc(newDoc, newUser);
-            console.log('User added to db! DOC ID: ', newDoc.id);
-        }
-        addToDB();
-        console.log('User successfully created! ', userCredentials.user.uid);
-        })
-    } catch (error) {
+    
+        const newDoc = doc(usersCollection, user.uid);
+        await setDoc(newDoc, newUser);
+    
+        console.log('User successfully created!', user.uid);
+      } catch (error) {
         console.error('Error creating account:', error);
         throw error;
-    }
+      }
 };
 
 export const signIn = async (email, password) => {
@@ -156,4 +162,10 @@ export const isAdmin = async () => {
     const userSnap = await getDoc(userRef);
     if (userSnap.data().type === 'admin') return true;
     return false;
+};
+
+export const getMyself = async () => {
+    const userRef = doc(db, 'users', auth.currentUser.uid);
+    const userSnap = await getDoc(userRef);
+    return userSnap.data();
 };

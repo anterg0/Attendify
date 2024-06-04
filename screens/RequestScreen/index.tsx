@@ -25,6 +25,11 @@ const RequestScreen = ({ navigation }) => {
     setRefreshing(false);
   };
 
+  const getUsersName = async ( uid ) => {
+    const user = await userRepo.getUserFromFirebase(auth.currentUser.uid, uid);
+    return `${user.firstName} ${user.lastName}`;
+  };
+
   useEffect(() => {
     fetchRequests();
   }, []);
@@ -57,7 +62,13 @@ const RequestScreen = ({ navigation }) => {
     return (
       <View style={[styles.mainContainer, styles[`${status}MainContainer`]]}>
         <View style={styles.topContainer}>
-          <Text>{`${requestType.toUpperCase()}\nFrom: ${DeserializeDate(startDate)} Until: ${DeserializeDate(endDate)}`}</Text>
+          {/* <Text>{`${requestType.toUpperCase()}\nFrom: ${DeserializeDate(startDate)} Until: ${DeserializeDate(endDate)}`}</Text> */}
+          <Text style={styles.sub}>{`Request Type:`}</Text>
+          <Text style={styles.sub2}>{`${requestType}`}</Text>
+          <Text style={styles.sub}>{`From:`}</Text>
+          <Text style={styles.sub2}>{`${DeserializeDate(startDate)}`}</Text>
+          <Text style={styles.sub}>{`Until:`}</Text>
+          <Text style={styles.sub2}>{`${DeserializeDate(endDate)}`}</Text>
         </View>
         <View style={[styles.bottomContainer, styles[status]]}>
           <Text style={[styles[`${status}Text`], styles.textStyle]}>
@@ -71,13 +82,18 @@ const RequestScreen = ({ navigation }) => {
   const renderUnreviewedItems = ({ item }) => {
 
     const { id, requestType, createdAt, userUid, status, startDate, endDate } = item;
+    const fullName = getUsersName(userUid);
     return (
       <View style={styles.mainContainer}>
         <View style={styles.topContainer}>
-          <Text>Request Type: {requestType}</Text>
-          <Text>User Name: {userUid}</Text>
-          <Text>Start Date: {DeserializeDate(startDate)}</Text>
-          <Text>End Date: {DeserializeDate(endDate)}</Text>
+          <Text style={styles.sub}>Requested By:</Text>
+          <Text style={styles.sub2}>{fullName}</Text>
+          <Text style={styles.sub}>Request Type:</Text>
+          <Text style={styles.sub2}>{requestType}</Text>
+          <Text style={styles.sub}>Start Date:</Text>
+          <Text style={styles.sub2}>{DeserializeDate(startDate)}</Text>
+          <Text style={styles.sub}>End Date:</Text>
+          <Text style={styles.sub2}>{DeserializeDate(endDate)}</Text>
         </View>
 
         <View style={styles.buttonContainer}>
@@ -105,7 +121,7 @@ const RequestScreen = ({ navigation }) => {
             <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
           }
         />
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('CreateRequest')}>
+        <TouchableOpacity style={styles.button2} onPress={() => navigation.navigate('CreateRequest')}>
           <Text style={styles.buttonText}>Create Request</Text>
         </TouchableOpacity>
       </View>
@@ -144,11 +160,26 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  sub: {
+    fontSize: 15, 
+    fontWeight: 'bold',
+  },
+  sub2: {
+    fontSize: 20, 
+    textTransform: 'capitalize',
+  },
   buttonContainer: {
     flexDirection: 'row',
     marginTop: 10,
   },
   button: {
+    flex: 1,
+    backgroundColor: '#6358EC',
+    height: 35,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  button2: {
     backgroundColor: '#6358EC',
     paddingHorizontal: 20,
     paddingVertical: 10,
@@ -217,7 +248,7 @@ const styles = StyleSheet.create({
   },
   mainContainer: {
     flex: 1, 
-    height: 130,
+    minHeight: 130,
     borderWidth: 1,
     borderColor: '#ddd',
     borderRadius: 15, 
@@ -225,7 +256,7 @@ const styles = StyleSheet.create({
   },
   topContainer: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     padding: 5,
     alignItems: 'center',
   },

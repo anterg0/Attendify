@@ -28,14 +28,6 @@ const AdminHome = ({ navigation }) => {
           <Ionicons name="paper-plane-sharp" color={color} size={size} />
         ),
       }}/>
-      <Tab.Screen name='Create User' 
-      component={CreateUser}
-      options={{
-        headerShown: false,
-        tabBarIcon: ({ color, size }) => (
-          <Ionicons name="person-add-sharp" color={color} size={size} />
-        ),
-      }}/>
       <Tab.Screen 
       name='Users' 
       component={CheckUsers} 

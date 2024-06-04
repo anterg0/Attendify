@@ -13,7 +13,7 @@ const UserHome = ({ navigation }) => {
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
-      headerBackVisible: false
+      headerBackVisible: false,
     });
   }, [navigation]);
 

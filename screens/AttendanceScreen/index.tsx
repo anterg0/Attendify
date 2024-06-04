@@ -89,8 +89,10 @@ const AttendanceScreen = ({route}) => {
             <View style={styles.item}>
               {item.startDate && item.endDate && item.startDate.seconds && item.endDate.seconds ? (
                 <React.Fragment>
-                  <Text>Start Date: {DeserializeDateTime(item.startDate)}</Text>
-                  <Text>End Date: {DeserializeDateTime(item.endDate)}</Text>
+                  <Text style={styles.sub}>Start Date:</Text>
+                  <Text style={styles.sub2}>{DeserializeDateTime(item.startDate)}</Text>
+                  <Text style={styles.sub}>End Date:</Text> 
+                  <Text style={styles.sub2}>{DeserializeDateTime(item.endDate)}</Text>
                 </React.Fragment>
               ) : (
                 <Text>Error: Missing date data</Text>
@@ -103,7 +105,7 @@ const AttendanceScreen = ({route}) => {
         }
       />
       <TouchableOpacity style={styles.button} onPress={saveCSVFile}>
-        <Text style={styles.export}><Ionicons name='download-outline'  size={25}/> Export to CSV</Text>
+        <Text style={styles.export}>Export to CSV</Text>
       </TouchableOpacity>
     </View>
   );
@@ -116,10 +118,19 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
     fontWeight: 'bold',
+    textTransform: 'uppercase',
   },
   container: {
     flex: 1,
     padding: 20,
+  },
+  sub: {
+    fontSize: 15, 
+    fontWeight: 'bold',
+  },
+  sub2: {
+    fontSize: 20, 
+    textTransform: 'capitalize',
   },
   loadingContainer: {
     flex: 1,
@@ -127,7 +138,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   header: {
-    fontSize: 20,
+    fontSize: 25,
     fontWeight: 'bold',
     marginBottom: 10,
   },
@@ -142,6 +153,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ddd',
     borderRadius: 5,
+    alignItems: 'center',
   },
   button: {
     backgroundColor: '#6358EC',

@@ -12,16 +12,12 @@ const attendRepo = new attendanceRepository();
 const requestRepo = new requestRepository();
  
 const Attend = ({ navigation }) => {
-  const [user, setUser] = useState(null);
   const [hasOngoingAttendance, setHasOngoingAttendance] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [startup, setStartup] = useState(true);
 
   useEffect(() => {
     const fetchUser = async () => {
-      const userRef = doc(db, 'users', auth.currentUser.uid);
-      const userDoc = await getDoc(userRef);
-      setUser(userDoc.data());
       if (await attendRepo.checkOngoing(auth.currentUser.uid)) setHasOngoingAttendance(true);
       else setHasOngoingAttendance(false);
       setStartup(false);
@@ -50,22 +46,15 @@ const Attend = ({ navigation }) => {
       </View>
     );
   }
-  const handleCreate = async () => {
-    setLoading(true);
-    await requestRepo.createVacationRequest(serverTimestamp(), serverTimestamp());
-    setLoading(false);
-  };
 
   const loading = isLoading ? { opacity: 0.5 } : {};
 
   return (
     <View style={styles.container}>
       <View style={[styles.container, loading]}>
-        {user && (
-          <Text style={[styles.greetingText]}>
-            Hello, {user.firstName} {user.lastName}
-          </Text>
-        )}
+        <Text style={[styles.greetingText]}>
+          Hello, {auth.currentUser.displayName || 'Unnamed'}
+        </Text>
         {hasOngoingAttendance ? (
           <TouchableOpacity style={[styles.button]} onPress={handleCheckOut}>
             <Text style={styles.buttonText}>Check Out</Text>
@@ -95,8 +84,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   greetingText: {
-    fontSize: 20,
+    fontSize: 25,
     marginBottom: 20,
+    textAlign: 'center',
   },
   button: {
     backgroundColor: '#6358EC',

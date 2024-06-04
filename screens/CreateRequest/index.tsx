@@ -16,7 +16,7 @@ const CreateRequest = ({ navigation }) => {
   const handleCreateRequest = async () => {
     if (requestType === 'vacation') {
         if (fromDate > untilDate) {
-            Alert.alert('Error', "From date can't be set later than until date.");
+            Alert.alert('Error', "'From' date can't be set later than 'Until' date.");
             return;
         }
         await reqRepo.createVacationRequest(fromDate, untilDate).then(() => {
@@ -97,7 +97,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
+    justifyContent: 'center',
   },
   label: {
     fontSize: 16,
