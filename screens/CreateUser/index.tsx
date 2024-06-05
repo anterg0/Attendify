@@ -12,11 +12,14 @@ const CreateUser = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleCreate = async () => {
+    setIsLoading(true);
     await repo.createUserInFirebase(email, password, firstName, lastName).then(() => {
       Alert.alert('Success', 'User was created successfully.');
+      setIsLoading(false);
       navigation.goBack();
     }).catch((error) => {
       Alert.alert('Error', `Error: ${error}`);
+      setIsLoading(false);
     });
   };
 
